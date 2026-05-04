@@ -2,15 +2,24 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Move">
 <meta name="theme-color" content="#0d0d0d">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
 <title>Move</title>
+<!-- Fonts with system fallback for offline iOS launch -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* iOS safe area + height fix */
+  html { height: -webkit-fill-available; }
+  body { min-height: -webkit-fill-available; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+</style>
 <style>
 :root {
   --bg: #0d0d0d;
@@ -29,8 +38,8 @@
   --purple: #c4b5fd;
   --purple-dim: rgba(196,181,253,0.1);
   --red: #ff8a80;
-  --mono: 'DM Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
+  --mono: 'DM Mono', ui-monospace, 'SF Mono', monospace;
+  --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
   --radius: 14px;
   --radius-sm: 8px;
 }
@@ -41,12 +50,14 @@ body {
   font-family: var(--sans);
   background: var(--bg);
   color: var(--text);
-  min-height: 100dvh;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* APP SHELL */
-.app { display: flex; flex-direction: column; height: 100dvh; overflow: hidden; }
+.app { display: flex; flex-direction: column; height: 100vh; height: -webkit-fill-available; overflow: hidden; }
 
 /* TOP BAR */
 .topbar {
@@ -863,6 +874,14 @@ renderToday();
 renderMobility();
 renderSchedule();
 </script>
-<script>if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js");</script>
+<script>
+  // iOS PWA: register SW with relative path after DOM is ready
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+        .catch(function(err) { console.log('SW registration failed:', err); });
+    });
+  }
+</script>
 </body>
 </html>
