@@ -8,10 +8,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Move">
 <meta name="theme-color" content="#0d0d0d">
-<link rel="manifest" href="./manifest.json">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-<link rel="apple-touch-icon" sizes="192x192" href="./icons/icon-192.png">
-<link rel="apple-touch-icon" sizes="512x512" href="./icons/icon-512.png">
+<link rel="manifest" href="/calisthenics-pwa/manifest.json">
+<link rel="apple-touch-icon" href="/calisthenics-pwa/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/calisthenics-pwa/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/calisthenics-pwa/icons/icon-512.png">
 <title>Move</title>
 <!-- Fonts with system fallback for offline iOS launch -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -878,7 +878,7 @@ renderSchedule();
   // iOS PWA: register SW with relative path after DOM is ready
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('./sw.js', { scope: './' })
+      navigator.serviceWorker.register('/calisthenics-pwa/sw.js', { scope: '/calisthenics-pwa/' })
         .catch(function(err) { console.log('SW registration failed:', err); });
     });
   }
