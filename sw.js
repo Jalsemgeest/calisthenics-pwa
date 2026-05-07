@@ -1,4 +1,4 @@
-const CACHE = 'move-v3';
+const CACHE = 'move-v4';
 const ASSETS = [
   '/calisthenics-pwa/',
   '/calisthenics-pwa/index.html',

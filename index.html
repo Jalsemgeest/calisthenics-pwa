@@ -1,1250 +1,685 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Move">
-  <meta name="theme-color" content="#0d0d0d">
-  <link rel="manifest" href="/calisthenics-pwa/manifest.json">
-  <link rel="apple-touch-icon" href="/calisthenics-pwa/icons/icon-192.png">
-  <link rel="apple-touch-icon" sizes="192x192" href="/calisthenics-pwa/icons/icon-192.png">
-  <link rel="apple-touch-icon" sizes="512x512" href="/calisthenics-pwa/icons/icon-512.png">
-  <title>Move</title>
-  <!-- Fonts with system fallback for offline iOS launch -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
-    rel="stylesheet">
-  <style>
-    /* iOS safe area + height fix */
-    html {
-      height: -webkit-fill-available;
-    }
-
-    body {
-      min-height: -webkit-fill-available;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-  </style>
-  <style>
-    :root {
-      --bg: #0d0d0d;
-      --surface: #161616;
-      --surface2: #1f1f1f;
-      --border: rgba(255, 255, 255, 0.07);
-      --border2: rgba(255, 255, 255, 0.12);
-      --text: #f0ede8;
-      --muted: rgba(240, 237, 232, 0.45);
-      --hint: rgba(240, 237, 232, 0.22);
-      --green: #b8f5a0;
-      --green-dim: rgba(184, 245, 160, 0.12);
-      --green-border: rgba(184, 245, 160, 0.25);
-      --amber: #f5d87a;
-      --amber-dim: rgba(245, 216, 122, 0.1);
-      --purple: #c4b5fd;
-      --purple-dim: rgba(196, 181, 253, 0.1);
-      --red: #ff8a80;
-      --mono: 'DM Mono', ui-monospace, 'SF Mono', monospace;
-      --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-      --radius: 14px;
-      --radius-sm: 8px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      min-height: -webkit-fill-available;
-      overscroll-behavior: none;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* APP SHELL */
-    .app {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      height: -webkit-fill-available;
-      overflow: hidden;
-    }
-
-    /* TOP BAR */
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 16px 20px 12px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-      flex-shrink: 0;
-    }
-
-    .logo {
-      font-family: var(--mono);
-      font-size: 18px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .logo span {
-      color: var(--green);
-    }
-
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .phase-badge {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 4px 10px;
-      background: var(--green-dim);
-      color: var(--green);
-      border: 1px solid var(--green-border);
-      border-radius: 99px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .phase-badge:active {
-      opacity: 0.7;
-    }
-
-    .streak-badge {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 4px 10px;
-      background: var(--amber-dim);
-      color: var(--amber);
-      border: 1px solid rgba(245, 216, 122, 0.2);
-      border-radius: 99px;
-    }
-
-    /* NAV */
-    .nav {
-      display: flex;
-      gap: 2px;
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-      overflow-x: auto;
-      scrollbar-width: none;
-      flex-shrink: 0;
-    }
-
-    .nav::-webkit-scrollbar {
-      display: none;
-    }
-
-    .nav-btn {
-      font-family: var(--mono);
-      font-size: 12px;
-      padding: 7px 14px;
-      border: 1px solid transparent;
-      border-radius: var(--radius-sm);
-      color: var(--muted);
-      background: transparent;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.15s;
-    }
-
-    .nav-btn.active {
-      color: var(--text);
-      background: var(--surface2);
-      border-color: var(--border2);
-    }
-
-    .nav-btn:active {
-      opacity: 0.7;
-    }
-
-    /* CONTENT */
-    .content {
-      flex: 1;
-      overflow-y: auto;
-      padding: 16px;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    /* VIEWS */
-    .view {
-      display: none;
-    }
-
-    .view.active {
-      display: block;
-    }
-
-    /* TODAY VIEW */
-    .day-header {
-      margin-bottom: 20px;
-    }
-
-    .day-date {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .day-title {
-      font-size: 22px;
-      font-weight: 300;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-
-    .day-subtitle {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 3px;
-    }
-
-    .progress-bar-wrap {
-      margin-bottom: 20px;
-    }
-
-    .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .progress-track {
-      height: 3px;
-      background: var(--surface2);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .progress-fill {
-      height: 100%;
-      background: var(--green);
-      border-radius: 99px;
-      transition: width 0.4s ease;
-    }
-
-    /* EXERCISE BLOCKS */
-    .block {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      margin-bottom: 10px;
-      overflow: hidden;
-    }
-
-    .block-header {
-      padding: 14px 16px 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .block-label {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .label-warmup {
-      color: var(--green);
-    }
-
-    .label-main {
-      color: var(--purple);
-    }
-
-    .label-shoulder {
-      color: var(--amber);
-    }
-
-    .label-cooldown {
-      color: var(--muted);
-    }
-
-    .block-time {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .exercise {
-      padding: 12px 16px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      transition: background 0.1s;
-      user-select: none;
-    }
-
-    .exercise:active {
-      background: var(--surface2);
-    }
-
-    .exercise.done {
-      opacity: 0.45;
-    }
-
-    .ex-check {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border2);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .exercise.done .ex-check {
-      background: var(--green);
-      border-color: var(--green);
-    }
-
-    .check-icon {
-      display: none;
-      width: 12px;
-      height: 12px;
-    }
-
-    .exercise.done .check-icon {
-      display: block;
-    }
-
-    .ex-info {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .ex-name {
-      font-size: 14px;
-      color: var(--text);
-      line-height: 1.3;
-    }
-
-    .ex-sets {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    .ex-sets-tracker {
-      display: flex;
-      gap: 5px;
-      flex-shrink: 0;
-    }
-
-    .set-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border2);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-
-    .set-dot.done {
-      background: var(--green);
-      border-color: var(--green);
-    }
-
-    /* TIMER */
-    .timer-fab {
-      position: fixed;
-      bottom: 24px;
-      right: 20px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: var(--surface2);
-      border: 1px solid var(--border2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 100;
-      transition: all 0.2s;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    }
-
-    .timer-fab:active {
-      transform: scale(0.94);
-    }
-
-    .timer-fab.running {
-      background: var(--green-dim);
-      border-color: var(--green-border);
-    }
-
-    .timer-display {
-      font-family: var(--mono);
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    .timer-fab.running .timer-display {
-      color: var(--green);
-    }
-
-    /* REST TIMER OVERLAY */
-    .rest-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(13, 13, 13, 0.95);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-
-    .rest-overlay.visible {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .rest-label {
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 16px;
-    }
-
-    .rest-time {
-      font-family: var(--mono);
-      font-size: 72px;
-      font-weight: 500;
-      color: var(--text);
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin-bottom: 8px;
-    }
-
-    .rest-time.urgent {
-      color: var(--red);
-    }
-
-    .rest-next {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 40px;
-    }
-
-    .rest-skip {
-      font-family: var(--mono);
-      font-size: 13px;
-      padding: 12px 28px;
-      border: 1px solid var(--border2);
-      border-radius: var(--radius-sm);
-      background: transparent;
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .rest-skip:active {
-      opacity: 0.7;
-    }
-
-    .rest-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 200px;
-      height: 200px;
-      opacity: 0.15;
-      pointer-events: none;
-    }
-
-    /* SCHEDULE VIEW */
-    .schedule-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .sched-day {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-    }
-
-    .sched-day-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-
-    .sched-day-name {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    .sched-tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      padding: 3px 9px;
-      border-radius: 99px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .tag-train {
-      background: var(--purple-dim);
-      color: var(--purple);
-      border: 1px solid rgba(196, 181, 253, 0.2);
-    }
-
-    .tag-rest {
-      background: var(--surface2);
-      color: var(--muted);
-      border: 1px solid var(--border);
-    }
-
-    .tag-climb {
-      background: var(--amber-dim);
-      color: var(--amber);
-      border: 1px solid rgba(245, 216, 122, 0.2);
-    }
-
-    .sched-exercises {
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    /* HISTORY VIEW */
-    .history-empty {
-      text-align: center;
-      padding: 60px 20px;
-    }
-
-    .history-empty-icon {
-      font-size: 32px;
-      margin-bottom: 12px;
-      opacity: 0.4;
-    }
-
-    .history-empty-text {
-      font-size: 14px;
-      color: var(--muted);
-    }
-
-    .history-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .history-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-    }
-
-    .history-item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 6px;
-    }
-
-    .history-item-title {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    .history-item-date {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .history-item-stats {
-      display: flex;
-      gap: 16px;
-    }
-
-    .history-stat {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .history-stat span {
-      color: var(--green);
-    }
-
-    /* MOBILITY VIEW */
-    .mob-section-title {
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 20px 0 10px;
-    }
-
-    .mob-section-title:first-child {
-      margin-top: 0;
-    }
-
-    .mob-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      cursor: pointer;
-      transition: background 0.1s;
-    }
-
-    .mob-card:active {
-      background: var(--surface2);
-    }
-
-    .mob-card.done {
-      opacity: 0.45;
-    }
-
-    .mob-card-check {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border2);
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 1px;
-      transition: all 0.2s;
-    }
-
-    .mob-card.done .mob-card-check {
-      background: var(--green);
-      border-color: var(--green);
-    }
-
-    .mob-card-body {
-      flex: 1;
-    }
-
-    .mob-card-title {
-      font-size: 14px;
-      color: var(--text);
-      font-weight: 500;
-      margin-bottom: 3px;
-    }
-
-    .mob-card-desc {
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    .mob-card-sets {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 4px;
-    }
-
-    /* PHASE MODAL */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      z-index: 300;
-      display: flex;
-      align-items: flex-end;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s;
-    }
-
-    .modal-overlay.visible {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .modal {
-      background: var(--surface);
-      border: 1px solid var(--border2);
-      border-radius: var(--radius) var(--radius) 0 0;
-      padding: 24px 20px 40px;
-      width: 100%;
-      transform: translateY(20px);
-      transition: transform 0.2s;
-    }
-
-    .modal-overlay.visible .modal {
-      transform: translateY(0);
-    }
-
-    .modal-title {
-      font-size: 16px;
-      font-weight: 500;
-      margin-bottom: 16px;
-    }
-
-    .phase-option {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
-      cursor: pointer;
-    }
-
-    .phase-option:last-child {
-      border-bottom: none;
-    }
-
-    .phase-option-name {
-      font-size: 15px;
-      color: var(--text);
-    }
-
-    .phase-option-weeks {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .phase-option.selected .phase-option-name {
-      color: var(--green);
-    }
-
-    /* COMPLETE BANNER */
-    .complete-banner {
-      background: var(--green-dim);
-      border: 1px solid var(--green-border);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
-      display: none;
-    }
-
-    .complete-banner.visible {
-      display: block;
-    }
-
-    .complete-banner-title {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--green);
-      margin-bottom: 4px;
-    }
-
-    .complete-banner-sub {
-      font-size: 13px;
-      color: rgba(184, 245, 160, 0.6);
-    }
-
-    /* WORKOUT SELECTOR */
-    .workout-selector {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 16px;
-      overflow-x: auto;
-      scrollbar-width: none;
-      padding-bottom: 2px;
-    }
-
-    .workout-selector::-webkit-scrollbar {
-      display: none;
-    }
-
-    .ws-btn {
-      font-family: var(--mono);
-      font-size: 11px;
-      padding: 6px 12px;
-      border: 1px solid var(--border2);
-      border-radius: 99px;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.15s;
-    }
-
-    .ws-btn.active {
-      background: var(--surface2);
-      color: var(--text);
-      border-color: var(--border2);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Move">
+<meta name="theme-color" content="#0d0d0d">
+<link rel="manifest" href="/calisthenics-pwa/manifest.json">
+<link rel="apple-touch-icon" href="/calisthenics-pwa/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="192x192" href="/calisthenics-pwa/icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/calisthenics-pwa/icons/icon-512.png">
+<title>Move</title>
+<!-- Fonts with system fallback for offline iOS launch -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* iOS safe area + height fix */
+  html { height: -webkit-fill-available; }
+  body { min-height: -webkit-fill-available; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
+</style>
+<style>
+:root {
+  --bg: #0d0d0d;
+  --surface: #161616;
+  --surface2: #1f1f1f;
+  --border: rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.12);
+  --text: #f0ede8;
+  --muted: rgba(240,237,232,0.45);
+  --hint: rgba(240,237,232,0.22);
+  --green: #b8f5a0;
+  --green-dim: rgba(184,245,160,0.12);
+  --green-border: rgba(184,245,160,0.25);
+  --amber: #f5d87a;
+  --amber-dim: rgba(245,216,122,0.1);
+  --purple: #c4b5fd;
+  --purple-dim: rgba(196,181,253,0.1);
+  --red: #ff8a80;
+  --mono: 'DM Mono', ui-monospace, 'SF Mono', monospace;
+  --sans: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --radius: 14px;
+  --radius-sm: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* APP SHELL */
+.app { display: flex; flex-direction: column; height: 100vh; height: -webkit-fill-available; overflow: hidden; }
+
+/* TOP BAR */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+.logo { font-family: var(--mono); font-size: 18px; font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
+.logo span { color: var(--green); }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.phase-badge {
+  font-family: var(--mono); font-size: 11px; padding: 4px 10px;
+  background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border);
+  border-radius: 99px; cursor: pointer; transition: all 0.15s;
+}
+.phase-badge:active { opacity: 0.7; }
+.streak-badge {
+  font-family: var(--mono); font-size: 11px; padding: 4px 10px;
+  background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,216,122,0.2);
+  border-radius: 99px;
+}
+
+/* NAV */
+.nav {
+  display: flex; gap: 2px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto; scrollbar-width: none;
+  flex-shrink: 0;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  font-family: var(--mono); font-size: 12px; padding: 7px 14px;
+  border: 1px solid transparent; border-radius: var(--radius-sm);
+  color: var(--muted); background: transparent; cursor: pointer;
+  white-space: nowrap; transition: all 0.15s;
+}
+.nav-btn.active { color: var(--text); background: var(--surface2); border-color: var(--border2); }
+.nav-btn:active { opacity: 0.7; }
+
+/* CONTENT */
+.content { flex: 1; overflow-y: auto; padding: 16px; -webkit-overflow-scrolling: touch; }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* TODAY VIEW */
+.day-header { margin-bottom: 20px; }
+.day-date { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.day-title { font-size: 22px; font-weight: 300; color: var(--text); letter-spacing: -0.02em; }
+.day-subtitle { font-size: 13px; color: var(--muted); margin-top: 3px; }
+
+.progress-bar-wrap { margin-bottom: 20px; }
+.progress-label { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+.progress-track { height: 3px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.4s ease; }
+
+/* EXERCISE BLOCKS */
+.block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.block-header { padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; }
+.block-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+.label-warmup { color: var(--green); }
+.label-main { color: var(--purple); }
+.label-shoulder { color: var(--amber); }
+.label-cooldown { color: var(--muted); }
+.block-time { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+.exercise {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer; transition: background 0.1s;
+  user-select: none;
+}
+.exercise:active { background: var(--surface2); }
+.exercise.done { opacity: 0.45; }
+
+.ex-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--border2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.exercise.done .ex-check { background: var(--green); border-color: var(--green); }
+.check-icon { display: none; width: 12px; height: 12px; }
+.exercise.done .check-icon { display: block; }
+
+.ex-info { flex: 1; min-width: 0; }
+.ex-name { font-size: 14px; color: var(--text); line-height: 1.3; }
+.ex-sets { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.ex-sets-tracker { display: flex; gap: 5px; flex-shrink: 0; }
+.set-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  border: 1.5px solid var(--border2); cursor: pointer;
+  transition: all 0.15s;
+}
+.set-dot.done { background: var(--green); border-color: var(--green); }
+
+/* TIMER */
+.timer-fab {
+  position: fixed; bottom: 24px; right: 20px;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 100; transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+.timer-fab:active { transform: scale(0.94); }
+.timer-fab.running { background: var(--green-dim); border-color: var(--green-border); }
+.timer-display { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
+.timer-fab.running .timer-display { color: var(--green); }
+
+/* REST TIMER OVERLAY */
+.rest-overlay {
+  position: fixed; inset: 0; background: rgba(13,13,13,0.95);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+}
+.rest-overlay.visible { opacity: 1; pointer-events: all; }
+.rest-label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+.rest-time { font-family: var(--mono); font-size: 72px; font-weight: 500; color: var(--text); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
+.rest-time.urgent { color: var(--red); }
+.rest-next { font-size: 13px; color: var(--muted); margin-bottom: 40px; }
+.rest-skip { font-family: var(--mono); font-size: 13px; padding: 12px 28px; border: 1px solid var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--text); cursor: pointer; }
+.rest-skip:active { opacity: 0.7; }
+.rest-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; opacity: 0.15; pointer-events: none; }
+
+/* SCHEDULE VIEW */
+.schedule-grid { display: flex; flex-direction: column; gap: 10px; }
+.sched-day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.sched-day-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.sched-day-name { font-size: 15px; font-weight: 500; color: var(--text); }
+.sched-tag { font-family: var(--mono); font-size: 10px; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.05em; text-transform: uppercase; }
+.tag-train { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(196,181,253,0.2); }
+.tag-rest { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+.tag-climb { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,216,122,0.2); }
+.sched-exercises { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+/* HISTORY VIEW */
+.history-empty { text-align: center; padding: 60px 20px; }
+.history-empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
+.history-empty-text { font-size: 14px; color: var(--muted); }
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+.history-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.history-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+.history-item-title { font-size: 15px; font-weight: 500; color: var(--text); }
+.history-item-date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.history-item-stats { display: flex; gap: 16px; }
+.history-stat { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.history-stat span { color: var(--green); }
+
+/* MOBILITY VIEW */
+.mob-section-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 20px 0 10px; }
+.mob-section-title:first-child { margin-top: 0; }
+.mob-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background 0.1s; }
+.mob-card:active { background: var(--surface2); }
+.mob-card.done { opacity: 0.45; }
+.mob-card-check { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all 0.2s; }
+.mob-card.done .mob-card-check { background: var(--green); border-color: var(--green); }
+.mob-card-body { flex: 1; }
+.mob-card-title { font-size: 14px; color: var(--text); font-weight: 500; margin-bottom: 3px; }
+.mob-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.mob-card-sets { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* PHASE MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.modal-overlay.visible { opacity: 1; pointer-events: all; }
+.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius) var(--radius) 0 0; padding: 24px 20px 40px; width: 100%; transform: translateY(20px); transition: transform 0.2s; }
+.modal-overlay.visible .modal { transform: translateY(0); }
+.modal-title { font-size: 16px; font-weight: 500; margin-bottom: 16px; }
+.phase-option { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.phase-option:last-child { border-bottom: none; }
+.phase-option-name { font-size: 15px; color: var(--text); }
+.phase-option-weeks { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.phase-option.selected .phase-option-name { color: var(--green); }
+
+/* COMPLETE BANNER */
+.complete-banner { background: var(--green-dim); border: 1px solid var(--green-border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; display: none; }
+.complete-banner.visible { display: block; }
+.complete-banner-title { font-size: 15px; font-weight: 500; color: var(--green); margin-bottom: 4px; }
+.complete-banner-sub { font-size: 13px; color: rgba(184,245,160,0.6); }
+
+/* WORKOUT SELECTOR */
+.workout-selector { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.workout-selector::-webkit-scrollbar { display: none; }
+.ws-btn { font-family: var(--mono); font-size: 11px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 99px; background: transparent; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.ws-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+
+</style>
 </head>
-
 <body>
-  <div class="app">
+<div class="app">
 
-    <!-- TOP BAR -->
-    <div class="topbar">
-      <div class="logo">move<span>.</span></div>
-      <div class="topbar-right">
-        <div class="streak-badge" id="streakBadge">🔥 0</div>
-        <div class="phase-badge" id="phaseBadge" onclick="openPhaseModal()">Phase 1</div>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="logo">move<span>.</span></div>
+    <div class="topbar-right">
+      <div class="streak-badge" id="streakBadge">🔥 0</div>
+      <div class="phase-badge" id="phaseBadge" onclick="openPhaseModal()">Phase 1</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <button class="nav-btn active" onclick="showView('today', this)">Today</button>
+    <button class="nav-btn" onclick="showView('mobility', this)">Mobility</button>
+    <button class="nav-btn" onclick="showView('schedule', this)">Schedule</button>
+    <button class="nav-btn" onclick="showView('history', this)">History</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- TODAY VIEW -->
+    <div id="view-today" class="view active">
+      <div class="day-header">
+        <div class="day-date" id="todayDate"></div>
+        <div class="day-title" id="todayTitle">Select a workout</div>
+        <div class="day-subtitle" id="todaySubtitle"></div>
       </div>
-    </div>
 
-    <!-- NAV -->
-    <div class="nav">
-      <button class="nav-btn active" onclick="showView('today', this)">Today</button>
-      <button class="nav-btn" onclick="showView('mobility', this)">Mobility</button>
-      <button class="nav-btn" onclick="showView('schedule', this)">Schedule</button>
-      <button class="nav-btn" onclick="showView('history', this)">History</button>
-    </div>
+      <div class="workout-selector" id="workoutSelector"></div>
 
-    <!-- CONTENT -->
-    <div class="content">
+      <div class="complete-banner" id="completeBanner">
+        <div class="complete-banner-title">Workout complete 💪</div>
+        <div class="complete-banner-sub" id="completeBannerSub"></div>
+      </div>
 
-      <!-- TODAY VIEW -->
-      <div id="view-today" class="view active">
-        <div class="day-header">
-          <div class="day-date" id="todayDate"></div>
-          <div class="day-title" id="todayTitle">Select a workout</div>
-          <div class="day-subtitle" id="todaySubtitle"></div>
+      <div class="progress-bar-wrap" id="progressWrap" style="display:none">
+        <div class="progress-label">
+          <span>Progress</span>
+          <span id="progressText">0 / 0</span>
         </div>
-
-        <div class="workout-selector" id="workoutSelector"></div>
-
-        <div class="complete-banner" id="completeBanner">
-          <div class="complete-banner-title">Workout complete 💪</div>
-          <div class="complete-banner-sub" id="completeBannerSub"></div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
         </div>
-
-        <div class="progress-bar-wrap" id="progressWrap" style="display:none">
-          <div class="progress-label">
-            <span>Progress</span>
-            <span id="progressText">0 / 0</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" id="progressFill" style="width:0%"></div>
-          </div>
-        </div>
-
-        <div id="workoutContent"></div>
       </div>
 
-      <!-- MOBILITY VIEW -->
-      <div id="view-mobility" class="view">
-        <div class="mob-section-title">Daily — 5 min, any time</div>
-        <div id="mobilityDaily"></div>
-        <div class="mob-section-title">Left shoulder protocol</div>
-        <div id="mobilityShoulder"></div>
-      </div>
+      <div id="workoutContent"></div>
+    </div>
 
-      <!-- SCHEDULE VIEW -->
-      <div id="view-schedule" class="view">
-        <div class="schedule-grid" id="scheduleGrid"></div>
-      </div>
+    <!-- MOBILITY VIEW -->
+    <div id="view-mobility" class="view">
+      <div class="mob-section-title">Daily — 5 min, any time</div>
+      <div id="mobilityDaily"></div>
+      <div class="mob-section-title">Left shoulder protocol</div>
+      <div id="mobilityShoulder"></div>
+    </div>
 
-      <!-- HISTORY VIEW -->
-      <div id="view-history" class="view">
-        <div id="historyContent"></div>
-      </div>
+    <!-- SCHEDULE VIEW -->
+    <div id="view-schedule" class="view">
+      <div class="schedule-grid" id="scheduleGrid"></div>
+    </div>
 
+    <!-- HISTORY VIEW -->
+    <div id="view-history" class="view">
+      <div id="historyContent"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TIMER FAB -->
+<div class="timer-fab" id="timerFab" onclick="toggleTimer()">
+  <div class="timer-display" id="timerDisplay">rest</div>
+</div>
+
+<!-- REST TIMER OVERLAY -->
+<div class="rest-overlay" id="restOverlay">
+  <svg class="rest-ring" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="90" fill="none" stroke="white" stroke-width="1" stroke-dasharray="565" stroke-dashoffset="0" id="restRingCircle"/>
+  </svg>
+  <div class="rest-label">Rest</div>
+  <div class="rest-time" id="restTimeDisplay">1:30</div>
+  <div class="rest-next" id="restNextExercise"></div>
+  <button class="rest-skip" onclick="skipRest()">Skip →</button>
+</div>
+
+<!-- PHASE MODAL -->
+<div class="modal-overlay" id="phaseModal" onclick="closePhaseModal(event)">
+  <div class="modal">
+    <div class="modal-title">Training phase</div>
+    <div class="phase-option selected" onclick="setPhase(1)" id="phase-opt-1">
+      <div class="phase-option-name">Phase 1 — Foundation</div>
+      <div class="phase-option-weeks">Weeks 1–4</div>
+    </div>
+    <div class="phase-option" onclick="setPhase(2)" id="phase-opt-2">
+      <div class="phase-option-name">Phase 2 — Build</div>
+      <div class="phase-option-weeks">Weeks 5–10</div>
+    </div>
+    <div class="phase-option" onclick="setPhase(3)" id="phase-opt-3">
+      <div class="phase-option-name">Phase 3 — Maintain</div>
+      <div class="phase-option-weeks">Week 11+</div>
     </div>
   </div>
+</div>
 
-  <!-- TIMER FAB -->
-  <div class="timer-fab" id="timerFab" onclick="toggleTimer()">
-    <div class="timer-display" id="timerDisplay">rest</div>
-  </div>
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
 
-  <!-- REST TIMER OVERLAY -->
-  <div class="rest-overlay" id="restOverlay">
-    <svg class="rest-ring" viewBox="0 0 200 200">
-      <circle cx="100" cy="100" r="90" fill="none" stroke="white" stroke-width="1" stroke-dasharray="565"
-        stroke-dashoffset="0" id="restRingCircle" />
-    </svg>
-    <div class="rest-label">Rest</div>
-    <div class="rest-time" id="restTimeDisplay">1:30</div>
-    <div class="rest-next" id="restNextExercise"></div>
-    <button class="rest-skip" onclick="skipRest()">Skip →</button>
-  </div>
-
-  <!-- PHASE MODAL -->
-  <div class="modal-overlay" id="phaseModal" onclick="closePhaseModal(event)">
-    <div class="modal">
-      <div class="modal-title">Training phase</div>
-      <div class="phase-option selected" onclick="setPhase(1)" id="phase-opt-1">
-        <div class="phase-option-name">Phase 1 — Foundation</div>
-        <div class="phase-option-weeks">Weeks 1–4</div>
-      </div>
-      <div class="phase-option" onclick="setPhase(2)" id="phase-opt-2">
-        <div class="phase-option-name">Phase 2 — Build</div>
-        <div class="phase-option-weeks">Weeks 5–10</div>
-      </div>
-      <div class="phase-option" onclick="setPhase(3)" id="phase-opt-3">
-        <div class="phase-option-name">Phase 3 — Maintain</div>
-        <div class="phase-option-weeks">Week 11+</div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // ─── DATA ───────────────────────────────────────────────────────────────────
-
-    const WORKOUTS = {
-      push: {
-        id: 'push',
-        name: 'Push + Core',
-        subtitle: 'Chest · Shoulders · Triceps · Core',
-        blocks: [
-          {
-            label: 'Warm-up', type: 'warmup', time: '5 min',
-            exercises: [
-              { id: 'e1', name: 'Arm circles (forward + back)', sets: 2, reps: '10/dir', note: '' },
-              { id: 'e2', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Slow, controlled full rotation' },
-            ]
-          },
-          {
-            label: 'Main', type: 'main', time: '20–25 min',
-            exercises: [
-              { id: 'e3', name: 'Incline push-up', sets: 3, reps: '10–12', note: 'P2: flat floor push-up' },
-              { id: 'e4', name: 'Dip bar support hold', sets: 3, reps: '20 s', note: 'Keep shoulders down' },
-              { id: 'e5', name: 'Pike push-up', sets: 2, reps: '8', note: 'Hips high, head through at bottom' },
-              { id: 'e6', name: 'Dead bug', sets: 3, reps: '8/side', note: 'Lower back pressed to floor' },
-              { id: 'e7', name: 'Plank', sets: 3, reps: '20–30 s', note: 'Squeeze glutes + abs' },
-            ]
-          },
-          {
-            label: 'Shoulder care', type: 'shoulder', time: '8 min',
-            exercises: [
-              { id: 'e8', name: 'Band external rotation', sets: 2, reps: '12–15', note: 'Light band, left arm focus' },
-              { id: 'e9', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'End-of-session, slow circles' },
-            ]
-          },
-          {
-            label: 'Cool-down', type: 'cooldown', time: '5 min',
-            exercises: [
-              { id: 'e10', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: '' },
-              { id: 'e11', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: '' },
-            ]
-          }
+const WORKOUTS = {
+  push: {
+    id: 'push',
+    name: 'Push + Core',
+    subtitle: 'Chest · Shoulders · Triceps · Core',
+    blocks: [
+      {
+        label: 'Warm-up', type: 'warmup', time: '5 min',
+        exercises: [
+          { id: 'e1', name: 'Arm circles (forward + back)', sets: 2, reps: '10/dir', note: '' },
+          { id: 'e2', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Slow, controlled full rotation' },
         ]
       },
-      legs: {
-        id: 'legs',
-        name: 'Hinge + Legs',
-        subtitle: 'Glutes · Hamstrings · Quads · Core',
-        blocks: [
-          {
-            label: 'Warm-up', type: 'warmup', time: '5 min',
-            exercises: [
-              { id: 'l1', name: 'Leg swings (forward + lateral)', sets: 2, reps: '10/side', note: '' },
-              { id: 'l2', name: 'Glute bridge', sets: 2, reps: '10', note: 'Activate glutes before loading' },
-            ]
-          },
-          {
-            label: 'Main', type: 'main', time: '20–25 min',
-            exercises: [
-              { id: 'l3', name: 'Bodyweight squat', sets: 3, reps: '12', note: 'P2: add pause at bottom' },
-              { id: 'l4', name: 'Hip hinge / RDL', sets: 3, reps: '10', note: 'Hinge at hips, soft knees' },
-              { id: 'l5', name: 'Reverse lunge', sets: 3, reps: '8/side', note: 'P2: add band resistance' },
-              { id: 'l6', name: 'Glute bridge', sets: 3, reps: '12', note: 'P2: single-leg' },
-              { id: 'l7', name: 'Slow calf raise', sets: 2, reps: '15', note: '3 s up, 3 s down' },
-              { id: 'l8', name: 'Copenhagen plank', sets: 2, reps: '15 s/side', note: 'Adductor + core' },
-            ]
-          },
-          {
-            label: 'Cool-down', type: 'cooldown', time: '5 min',
-            exercises: [
-              { id: 'l9', name: '90/90 hip stretch', sets: 1, reps: '60 s/side', note: '' },
-              { id: 'l10', name: 'Standing quad stretch', sets: 1, reps: '45 s/side', note: '' },
-              { id: 'l11', name: 'Hamstring stretch', sets: 1, reps: '45 s/side', note: '' },
-            ]
-          }
+      {
+        label: 'Main', type: 'main', time: '20–25 min',
+        exercises: [
+          { id: 'e3', name: 'Incline push-up', sets: 3, reps: '10–12', note: 'P2: flat floor push-up' },
+          { id: 'e4', name: 'Dip bar support hold', sets: 3, reps: '20 s', note: 'Keep shoulders down' },
+          { id: 'e5', name: 'Pike push-up', sets: 2, reps: '8', note: 'Hips high, head through at bottom' },
+          { id: 'e6', name: 'Dead bug', sets: 3, reps: '8/side', note: 'Lower back pressed to floor' },
+          { id: 'e7', name: 'Plank', sets: 3, reps: '20–30 s', note: 'Squeeze glutes + abs' },
         ]
       },
-      pull: {
-        id: 'pull',
-        name: 'Pull Day',
-        subtitle: 'Back · Biceps · Scapula · Shoulder rehab',
-        blocks: [
-          {
-            label: 'Warm-up', type: 'warmup', time: '5 min',
-            exercises: [
-              { id: 'p1', name: 'Arm circles', sets: 2, reps: '10/dir', note: '' },
-              { id: 'p2', name: 'Band pull-aparts', sets: 2, reps: '15', note: 'Light band, scapulae together' },
-              { id: 'p3', name: 'Scapular shrugs (hang or standing)', sets: 2, reps: '10', note: 'Depress + elevate shoulder blades' },
-            ]
-          },
-          {
-            label: 'Main', type: 'main', time: '15–20 min',
-            exercises: [
-              { id: 'p4', name: 'Ring / TRX row (~45° angle)', sets: 3, reps: '10–12', note: 'P2: feet elevated on box' },
-              { id: 'p5', name: 'Scapular pull-ups', sets: 3, reps: '8', note: 'P2: add negative pull-ups 3–5 s' },
-              { id: 'p6', name: 'Band lat pulldown', sets: 3, reps: '12', note: 'Anchor band overhead' },
-              { id: 'p7', name: 'Dead hang', sets: 2, reps: '15–20 s', note: 'Skip if shoulder protests' },
-            ]
-          },
-          {
-            label: 'Left shoulder', type: 'shoulder', time: '8 min',
-            exercises: [
-              { id: 'p8', name: 'Band external rotation', sets: 2, reps: '12–15', note: 'Very light — rehab patterning' },
-              { id: 'p9', name: 'Prone Y-T-W', sets: 2, reps: '8 each', note: 'P2: add light plates' },
-              { id: 'p10', name: 'Band face pulls', sets: 2, reps: '15', note: 'Pull to forehead level' },
-              { id: 'p11', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Finish with controlled circles' },
-            ]
-          },
-          {
-            label: 'Cool-down', type: 'cooldown', time: '5 min',
-            exercises: [
-              { id: 'p12', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: '' },
-              { id: 'p13', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: '' },
-              { id: 'p14', name: 'Thoracic rotation', sets: 1, reps: '10/side', note: '' },
-            ]
-          }
+      {
+        label: 'Shoulder care', type: 'shoulder', time: '8 min',
+        exercises: [
+          { id: 'e8', name: 'Band external rotation', sets: 2, reps: '12–15', note: 'Light band, left arm focus' },
+          { id: 'e9', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'End-of-session, slow circles' },
         ]
       },
-      climb: {
-        id: 'climb',
-        name: 'Climbing Day',
-        subtitle: 'Active pull session — add these after climbing',
-        blocks: [
-          {
-            label: 'Post-climb add-ons', type: 'main', time: '10 min',
-            exercises: [
-              { id: 'c1', name: 'Scapular pull-ups', sets: 2, reps: '8', note: 'Cool-down movement' },
-              { id: 'c2', name: 'Band face pulls', sets: 2, reps: '15', note: 'Counteracts forward pull pattern' },
-              { id: 'c3', name: 'Band external rotation — left', sets: 2, reps: '12', note: 'Left shoulder priority' },
-              { id: 'c4', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Final joint care' },
-            ]
-          }
+      {
+        label: 'Cool-down', type: 'cooldown', time: '5 min',
+        exercises: [
+          { id: 'e10', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: '' },
+          { id: 'e11', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: '' },
         ]
       }
-    };
-
-    const SCHEDULE = [
-      { day: 'Day 1', title: 'Push + Core', type: 'train', workout: 'push', exercises: 'Incline push-ups · Pike push-ups · Dead bug · Plank · Shoulder CARs' },
-      { day: 'Day 2', title: 'Active Rest', type: 'rest', workout: null, exercises: 'Dog walk (Zone 2) · Hip flexor stretch · Thoracic rotations · Cat-cow' },
-      { day: 'Day 3', title: 'Hinge + Legs', type: 'train', workout: 'legs', exercises: 'Squat · Hip hinge · Reverse lunge · Glute bridge · Copenhagen plank' },
-      { day: 'Day 4', title: 'Climbing / Pull Day', type: 'climb', workout: 'climb', exercises: 'Rock climbing + shoulder add-ons — or substitute Pull Day if no climbing' },
-      { day: 'Day 5–7', title: 'Full Rest', type: 'rest', workout: null, exercises: 'Dog walks daily · Optional 5-min morning mobility · Sleep & recovery' },
-    ];
-
-    const MOBILITY_DAILY = [
-      { id: 'm1', title: 'Thoracic extension', desc: 'Foam roll or edge of chair, extend over edge. Counteracts forward-flexed desk spine.', sets: '2 × 10 reps' },
-      { id: 'm2', title: '90/90 hip stretch', desc: 'Sit with front and back leg at 90°. Hip flexors shorten with prolonged sitting — this is the antidote.', sets: '60 s / side' },
-      { id: 'm3', title: 'Wall angels', desc: 'Back flat to wall, slide arms overhead. Trains scapular retraction and upward rotation.', sets: '2 × 10 slow reps' },
-      { id: 'm4', title: 'Chin tucks', desc: 'Gently draw chin back, hold 3 s. Resets forward head posture — do at your desk too.', sets: '10–15 reps' },
-    ];
-
-    const MOBILITY_SHOULDER = [
-      { id: 'ms1', title: 'Band external rotation', desc: 'Elbow at side, rotate outward against band. Strengthens infraspinatus/teres minor — most commonly weak rotator cuff muscles.', sets: '2 × 12–15, light band' },
-      { id: 'ms2', title: 'Shoulder CARs', desc: 'Controlled Articular Rotation — 5 slow full circles each direction. Maintains joint health through full range of motion.', sets: '5 circles / direction / side' },
-      { id: 'ms3', title: 'Prone Y-T-W', desc: 'Lie face down, lift arms into Y, T, and W shapes. Activates lower and mid trapezius — counters upper trap dominance from desk work.', sets: '2 × 10 each shape' },
-    ];
-
-    // ─── STATE ──────────────────────────────────────────────────────────────────
-
-    let state = {
-      phase: 1,
-      currentWorkout: 'push',
-      completedSets: {},    // { exerciseId_setIndex: true }
-      completedExercises: {}, // { exerciseId: true }
-      workoutStartTime: null,
-      history: [],
-      streak: 0,
-      lastWorkoutDate: null,
-      mobilityDone: {},
-    };
-
-    function loadState() {
-      try {
-        const saved = localStorage.getItem('move_state');
-        if (saved) state = { ...state, ...JSON.parse(saved) };
-      } catch (e) { }
-    }
-
-    function saveState() {
-      try { localStorage.setItem('move_state', JSON.stringify(state)); } catch (e) { }
-    }
-
-    // ─── TIMER ──────────────────────────────────────────────────────────────────
-
-    let timerInterval = null;
-    let restSeconds = 90;
-    let restMax = 90;
-    let timerRunning = false;
-    let globalSeconds = 0;
-    let globalInterval = null;
-
-    function toggleTimer() {
-      if (timerRunning) {
-        openRestTimer(90);
-      } else {
-        openRestTimer(90);
+    ]
+  },
+  legs: {
+    id: 'legs',
+    name: 'Hinge + Legs',
+    subtitle: 'Glutes · Hamstrings · Quads · Core',
+    blocks: [
+      {
+        label: 'Warm-up', type: 'warmup', time: '5 min',
+        exercises: [
+          { id: 'l1', name: 'Leg swings (forward + lateral)', sets: 2, reps: '10/side', note: '' },
+          { id: 'l2', name: 'Glute bridge', sets: 2, reps: '10', note: 'Activate glutes before loading' },
+        ]
+      },
+      {
+        label: 'Main', type: 'main', time: '20–25 min',
+        exercises: [
+          { id: 'l3', name: 'Bodyweight squat', sets: 3, reps: '12', note: 'P2: add pause at bottom' },
+          { id: 'l4', name: 'Hip hinge / RDL', sets: 3, reps: '10', note: 'Hinge at hips, soft knees' },
+          { id: 'l5', name: 'Reverse lunge', sets: 3, reps: '8/side', note: 'P2: add band resistance' },
+          { id: 'l6', name: 'Glute bridge', sets: 3, reps: '12', note: 'P2: single-leg' },
+          { id: 'l7', name: 'Slow calf raise', sets: 2, reps: '15', note: '3 s up, 3 s down' },
+          { id: 'l8', name: 'Copenhagen plank', sets: 2, reps: '15 s/side', note: 'Adductor + core' },
+        ]
+      },
+      {
+        label: 'Cool-down', type: 'cooldown', time: '5 min',
+        exercises: [
+          { id: 'l9', name: '90/90 hip stretch', sets: 1, reps: '60 s/side', note: '' },
+          { id: 'l10', name: 'Standing quad stretch', sets: 1, reps: '45 s/side', note: '' },
+          { id: 'l11', name: 'Hamstring stretch', sets: 1, reps: '45 s/side', note: '' },
+        ]
       }
-    }
+    ]
+  },
+  pull: {
+    id: 'pull',
+    name: 'Pull Day',
+    subtitle: 'Back · Biceps · Scapula · Shoulder rehab',
+    blocks: [
+      {
+        label: 'Warm-up', type: 'warmup', time: '5 min',
+        exercises: [
+          { id: 'p1', name: 'Arm circles', sets: 2, reps: '10/dir', note: '' },
+          { id: 'p2', name: 'Band pull-aparts', sets: 2, reps: '15', note: 'Light band, scapulae together' },
+          { id: 'p3', name: 'Scapular shrugs (hang or standing)', sets: 2, reps: '10', note: 'Depress + elevate shoulder blades' },
+        ]
+      },
+      {
+        label: 'Main', type: 'main', time: '15–20 min',
+        exercises: [
+          { id: 'p4', name: 'Ring / TRX row (~45° angle)', sets: 3, reps: '10–12', note: 'P2: feet elevated on box' },
+          { id: 'p5', name: 'Scapular pull-ups', sets: 3, reps: '8', note: 'P2: add negative pull-ups 3–5 s' },
+          { id: 'p6', name: 'Band lat pulldown', sets: 3, reps: '12', note: 'Anchor band overhead' },
+          { id: 'p7', name: 'Dead hang', sets: 2, reps: '15–20 s', note: 'Skip if shoulder protests' },
+        ]
+      },
+      {
+        label: 'Left shoulder', type: 'shoulder', time: '8 min',
+        exercises: [
+          { id: 'p8', name: 'Band external rotation', sets: 2, reps: '12–15', note: 'Very light — rehab patterning' },
+          { id: 'p9', name: 'Prone Y-T-W', sets: 2, reps: '8 each', note: 'P2: add light plates' },
+          { id: 'p10', name: 'Band face pulls', sets: 2, reps: '15', note: 'Pull to forehead level' },
+          { id: 'p11', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Finish with controlled circles' },
+        ]
+      },
+      {
+        label: 'Cool-down', type: 'cooldown', time: '5 min',
+        exercises: [
+          { id: 'p12', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: '' },
+          { id: 'p13', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: '' },
+          { id: 'p14', name: 'Thoracic rotation', sets: 1, reps: '10/side', note: '' },
+        ]
+      }
+    ]
+  },
+  climb: {
+    id: 'climb',
+    name: 'Climbing Day',
+    subtitle: 'Active pull session — add these after climbing',
+    blocks: [
+      {
+        label: 'Post-climb add-ons', type: 'main', time: '10 min',
+        exercises: [
+          { id: 'c1', name: 'Scapular pull-ups', sets: 2, reps: '8', note: 'Cool-down movement' },
+          { id: 'c2', name: 'Band face pulls', sets: 2, reps: '15', note: 'Counteracts forward pull pattern' },
+          { id: 'c3', name: 'Band external rotation — left', sets: 2, reps: '12', note: 'Left shoulder priority' },
+          { id: 'c4', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Final joint care' },
+        ]
+      }
+    ]
+  }
+};
 
-    function openRestTimer(seconds, nextExName = '') {
-      restSeconds = seconds;
-      restMax = seconds;
-      document.getElementById('restOverlay').classList.add('visible');
-      document.getElementById('restNextExercise').textContent = nextExName ? 'Next: ' + nextExName : '';
-      updateRestDisplay();
+const SCHEDULE = [
+  { day: 'Day 1', title: 'Push + Core', type: 'train', workout: 'push', exercises: 'Incline push-ups · Pike push-ups · Dead bug · Plank · Shoulder CARs' },
+  { day: 'Day 2', title: 'Active Rest', type: 'rest', workout: null, exercises: 'Dog walk (Zone 2) · Hip flexor stretch · Thoracic rotations · Cat-cow' },
+  { day: 'Day 3', title: 'Hinge + Legs', type: 'train', workout: 'legs', exercises: 'Squat · Hip hinge · Reverse lunge · Glute bridge · Copenhagen plank' },
+  { day: 'Day 4', title: 'Climbing / Pull Day', type: 'climb', workout: 'climb', exercises: 'Rock climbing + shoulder add-ons — or substitute Pull Day if no climbing' },
+  { day: 'Day 5–7', title: 'Full Rest', type: 'rest', workout: null, exercises: 'Dog walks daily · Optional 5-min morning mobility · Sleep & recovery' },
+];
+
+const MOBILITY_DAILY = [
+  { id: 'm1', title: 'Thoracic extension', desc: 'Foam roll or edge of chair, extend over edge. Counteracts forward-flexed desk spine.', sets: '2 × 10 reps' },
+  { id: 'm2', title: '90/90 hip stretch', desc: 'Sit with front and back leg at 90°. Hip flexors shorten with prolonged sitting — this is the antidote.', sets: '60 s / side' },
+  { id: 'm3', title: 'Wall angels', desc: 'Back flat to wall, slide arms overhead. Trains scapular retraction and upward rotation.', sets: '2 × 10 slow reps' },
+  { id: 'm4', title: 'Chin tucks', desc: 'Gently draw chin back, hold 3 s. Resets forward head posture — do at your desk too.', sets: '10–15 reps' },
+];
+
+const MOBILITY_SHOULDER = [
+  { id: 'ms1', title: 'Band external rotation', desc: 'Elbow at side, rotate outward against band. Strengthens infraspinatus/teres minor — most commonly weak rotator cuff muscles.', sets: '2 × 12–15, light band' },
+  { id: 'ms2', title: 'Shoulder CARs', desc: 'Controlled Articular Rotation — 5 slow full circles each direction. Maintains joint health through full range of motion.', sets: '5 circles / direction / side' },
+  { id: 'ms3', title: 'Prone Y-T-W', desc: 'Lie face down, lift arms into Y, T, and W shapes. Activates lower and mid trapezius — counters upper trap dominance from desk work.', sets: '2 × 10 each shape' },
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+
+let state = {
+  phase: 1,
+  currentWorkout: 'push',
+  completedSets: {},    // { exerciseId_setIndex: true }
+  completedExercises: {}, // { exerciseId: true }
+  workoutStartTime: null,
+  history: [],
+  streak: 0,
+  lastWorkoutDate: null,
+  mobilityDone: {},
+};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('move_state');
+    if (saved) state = { ...state, ...JSON.parse(saved) };
+  } catch(e) {}
+}
+
+function saveState() {
+  try { localStorage.setItem('move_state', JSON.stringify(state)); } catch(e) {}
+}
+
+// ─── TIMER ──────────────────────────────────────────────────────────────────
+
+let timerInterval = null;
+let restSeconds = 90;
+let restMax = 90;
+let timerRunning = false;
+let globalSeconds = 0;
+let globalInterval = null;
+
+function toggleTimer() {
+  if (timerRunning) {
+    openRestTimer(90);
+  } else {
+    openRestTimer(90);
+  }
+}
+
+function openRestTimer(seconds, nextExName = '') {
+  restSeconds = seconds;
+  restMax = seconds;
+  document.getElementById('restOverlay').classList.add('visible');
+  document.getElementById('restNextExercise').textContent = nextExName ? 'Next: ' + nextExName : '';
+  updateRestDisplay();
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    restSeconds--;
+    updateRestDisplay();
+    if (restSeconds <= 0) {
       clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        restSeconds--;
-        updateRestDisplay();
-        if (restSeconds <= 0) {
-          clearInterval(timerInterval);
-          skipRest();
-          vibrate();
-        }
-      }, 1000);
+      skipRest();
+      vibrate();
     }
+  }, 1000);
+}
 
-    function updateRestDisplay() {
-      const m = Math.floor(restSeconds / 60);
-      const s = restSeconds % 60;
-      const display = m + ':' + String(s).padStart(2, '0');
-      document.getElementById('restTimeDisplay').textContent = display;
-      document.getElementById('restTimeDisplay').classList.toggle('urgent', restSeconds <= 10);
-      const pct = restSeconds / restMax;
-      const circ = 2 * Math.PI * 90;
-      document.getElementById('restRingCircle').setAttribute('stroke-dashoffset', circ * (1 - pct));
-    }
+function updateRestDisplay() {
+  const m = Math.floor(restSeconds / 60);
+  const s = restSeconds % 60;
+  const display = m + ':' + String(s).padStart(2,'0');
+  document.getElementById('restTimeDisplay').textContent = display;
+  document.getElementById('restTimeDisplay').classList.toggle('urgent', restSeconds <= 10);
+  const pct = restSeconds / restMax;
+  const circ = 2 * Math.PI * 90;
+  document.getElementById('restRingCircle').setAttribute('stroke-dashoffset', circ * (1 - pct));
+}
 
-    function skipRest() {
-      clearInterval(timerInterval);
-      document.getElementById('restOverlay').classList.remove('visible');
-    }
+function skipRest() {
+  clearInterval(timerInterval);
+  document.getElementById('restOverlay').classList.remove('visible');
+}
 
-    function vibrate() {
-      if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-    }
+function vibrate() {
+  if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+}
 
-    // ─── VIEWS ──────────────────────────────────────────────────────────────────
+// ─── VIEWS ──────────────────────────────────────────────────────────────────
 
-    function showView(name, btn) {
-      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById('view-' + name).classList.add('active');
-      if (btn) btn.classList.add('active');
-      if (name === 'history') renderHistory();
-    }
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (name === 'history') renderHistory();
+}
 
-    // ─── TODAY VIEW ──────────────────────────────────────────────────────────────
+// ─── TODAY VIEW ──────────────────────────────────────────────────────────────
 
-    function renderToday() {
-      const now = new Date();
-      document.getElementById('todayDate').textContent = now.toLocaleDateString('en-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+function renderToday() {
+  const now = new Date();
+  document.getElementById('todayDate').textContent = now.toLocaleDateString('en-CA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-      const selector = document.getElementById('workoutSelector');
-      selector.innerHTML = '';
-      ['push', 'legs', 'pull', 'climb'].forEach(id => {
-        const btn = document.createElement('button');
-        btn.className = 'ws-btn' + (state.currentWorkout === id ? ' active' : '');
-        btn.textContent = WORKOUTS[id].name;
-        btn.onclick = () => selectWorkout(id);
-        selector.appendChild(btn);
-      });
+  const selector = document.getElementById('workoutSelector');
+  selector.innerHTML = '';
+  ['push','legs','pull','climb'].forEach(id => {
+    const btn = document.createElement('button');
+    btn.className = 'ws-btn' + (state.currentWorkout === id ? ' active' : '');
+    btn.textContent = WORKOUTS[id].name;
+    btn.onclick = () => selectWorkout(id);
+    selector.appendChild(btn);
+  });
 
-      renderWorkout();
-    }
+  renderWorkout();
+}
 
-    function selectWorkout(id) {
-      state.currentWorkout = id;
-      state.completedSets = {};
-      state.completedExercises = {};
-      state.workoutStartTime = Date.now();
-      saveState();
-      renderToday();
-    }
+function selectWorkout(id) {
+  state.currentWorkout = id;
+  state.completedSets = {};
+  state.completedExercises = {};
+  state.workoutStartTime = Date.now();
+  saveState();
+  renderToday();
+}
 
-    function renderWorkout() {
-      const w = WORKOUTS[state.currentWorkout];
-      document.getElementById('todayTitle').textContent = w.name;
-      document.getElementById('todaySubtitle').textContent = w.subtitle;
+function renderWorkout() {
+  const w = WORKOUTS[state.currentWorkout];
+  document.getElementById('todayTitle').textContent = w.name;
+  document.getElementById('todaySubtitle').textContent = w.subtitle;
 
-      const allExercises = w.blocks.flatMap(b => b.exercises);
-      const doneCount = allExercises.filter(e => state.completedExercises[e.id]).length;
-      const total = allExercises.length;
-      const pct = total ? Math.round((doneCount / total) * 100) : 0;
+  const allExercises = w.blocks.flatMap(b => b.exercises);
+  const doneCount = allExercises.filter(e => state.completedExercises[e.id]).length;
+  const total = allExercises.length;
+  const pct = total ? Math.round((doneCount / total) * 100) : 0;
 
-      document.getElementById('progressWrap').style.display = 'block';
-      document.getElementById('progressText').textContent = doneCount + ' / ' + total;
-      document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('progressText').textContent = doneCount + ' / ' + total;
+  document.getElementById('progressFill').style.width = pct + '%';
 
-      const banner = document.getElementById('completeBanner');
-      if (doneCount === total && total > 0) {
-        banner.classList.add('visible');
-        const mins = state.workoutStartTime ? Math.round((Date.now() - state.workoutStartTime) / 60000) : '—';
-        document.getElementById('completeBannerSub').textContent = doneCount + ' exercises · ~' + mins + ' min · Nice work.';
-        if (doneCount === total) maybeSaveToHistory(w, doneCount, mins);
-      } else {
-        banner.classList.remove('visible');
-      }
+  const banner = document.getElementById('completeBanner');
+  if (doneCount === total && total > 0) {
+    banner.classList.add('visible');
+    const mins = state.workoutStartTime ? Math.round((Date.now() - state.workoutStartTime) / 60000) : '—';
+    document.getElementById('completeBannerSub').textContent = doneCount + ' exercises · ~' + mins + ' min · Nice work.';
+    if (doneCount === total) maybeSaveToHistory(w, doneCount, mins);
+  } else {
+    banner.classList.remove('visible');
+  }
 
-      const container = document.getElementById('workoutContent');
-      container.innerHTML = '';
+  const container = document.getElementById('workoutContent');
+  container.innerHTML = '';
 
-      w.blocks.forEach(block => {
-        const blockEl = document.createElement('div');
-        blockEl.className = 'block';
+  w.blocks.forEach(block => {
+    const blockEl = document.createElement('div');
+    blockEl.className = 'block';
 
-        const header = document.createElement('div');
-        header.className = 'block-header';
-        header.innerHTML = `<div class="block-label label-${block.type}">${block.label}</div><div class="block-time">${block.time}</div>`;
-        blockEl.appendChild(header);
+    const header = document.createElement('div');
+    header.className = 'block-header';
+    header.innerHTML = `<div class="block-label label-${block.type}">${block.label}</div><div class="block-time">${block.time}</div>`;
+    blockEl.appendChild(header);
 
-        block.exercises.forEach((ex, idx) => {
-          const done = !!state.completedExercises[ex.id];
-          const exEl = document.createElement('div');
-          exEl.className = 'exercise' + (done ? ' done' : '');
-          exEl.onclick = () => toggleExercise(ex.id, block.exercises, idx);
+    block.exercises.forEach((ex, idx) => {
+      const done = !!state.completedExercises[ex.id];
+      const exEl = document.createElement('div');
+      exEl.className = 'exercise' + (done ? ' done' : '');
+      exEl.onclick = () => toggleExercise(ex.id, block.exercises, idx);
 
-          const setDots = Array.from({ length: ex.sets }, (_, si) => {
-            const dotDone = !!state.completedSets[ex.id + '_' + si];
-            return `<div class="set-dot ${dotDone ? 'done' : ''}" onclick="toggleSet(event, '${ex.id}', ${si}, ${ex.sets})"></div>`;
-          }).join('');
+      const setDots = Array.from({length: ex.sets}, (_, si) => {
+        const dotDone = !!state.completedSets[ex.id + '_' + si];
+        return `<div class="set-dot ${dotDone ? 'done' : ''}" onclick="toggleSet(event, '${ex.id}', ${si}, ${ex.sets})"></div>`;
+      }).join('');
 
-          exEl.innerHTML = `
+      exEl.innerHTML = `
         <div class="ex-check">
           <svg class="check-icon" viewBox="0 0 12 12" fill="none">
             <path d="M2 6l3 3 5-5" stroke="#0d0d0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1256,108 +691,108 @@
         </div>
         <div class="ex-sets-tracker">${ex.sets > 1 ? setDots : ''}</div>
       `;
-          blockEl.appendChild(exEl);
-        });
+      blockEl.appendChild(exEl);
+    });
 
-        container.appendChild(blockEl);
-      });
-    }
+    container.appendChild(blockEl);
+  });
+}
 
-    function toggleExercise(id, blockExercises, idx) {
-      const ex = blockExercises[idx];
-      const totalSets = ex.sets;
+function toggleExercise(id, blockExercises, idx) {
+  const ex = blockExercises[idx];
+  const totalSets = ex.sets;
 
-      if (totalSets <= 1) {
-        state.completedExercises[id] = !state.completedExercises[id];
-        state.completedSets[id + '_0'] = state.completedExercises[id];
-      } else {
-        const doneSets = Array.from({ length: totalSets }, (_, i) => !!state.completedSets[id + '_' + i]);
-        const nextUnlit = doneSets.indexOf(false);
+  if (totalSets <= 1) {
+    state.completedExercises[id] = !state.completedExercises[id];
+    state.completedSets[id + '_0'] = state.completedExercises[id];
+  } else {
+    const doneSets = Array.from({length: totalSets}, (_, i) => !!state.completedSets[id + '_' + i]);
+    const nextUnlit = doneSets.indexOf(false);
 
-        if (nextUnlit === -1) {
-          // All done — reset on tap
-          for (let i = 0; i < totalSets; i++) state.completedSets[id + '_' + i] = false;
-          state.completedExercises[id] = false;
-        } else {
-          state.completedSets[id + '_' + nextUnlit] = true;
-          const allDone = nextUnlit === totalSets - 1;
-          state.completedExercises[id] = allDone;
-          if (allDone) {
-            const next = blockExercises[idx + 1];
-            if (next && !state.completedExercises[next.id]) {
-              setTimeout(() => openRestTimer(90, next.name), 200);
-            }
-          } else {
-            setTimeout(() => openRestTimer(90), 200);
-          }
+    if (nextUnlit === -1) {
+      // All done — reset on tap
+      for (let i = 0; i < totalSets; i++) state.completedSets[id + '_' + i] = false;
+      state.completedExercises[id] = false;
+    } else {
+      state.completedSets[id + '_' + nextUnlit] = true;
+      const allDone = nextUnlit === totalSets - 1;
+      state.completedExercises[id] = allDone;
+      if (allDone) {
+        const next = blockExercises[idx + 1];
+        if (next && !state.completedExercises[next.id]) {
+          setTimeout(() => openRestTimer(90, next.name), 200);
         }
+      } else {
+        setTimeout(() => openRestTimer(90), 200);
       }
-
-      saveState();
-      renderWorkout();
     }
+  }
 
-    function toggleSet(e, exId, setIdx, totalSets) {
-      e.stopPropagation();
-      const key = exId + '_' + setIdx;
-      state.completedSets[key] = !state.completedSets[key];
-      const allDone = Array.from({ length: totalSets }, (_, i) => !!state.completedSets[exId + '_' + i]).every(Boolean);
-      state.completedExercises[exId] = allDone;
-      if (state.completedSets[key]) {
-        setTimeout(() => openRestTimer(90), 150);
-      }
-      saveState();
-      renderWorkout();
-    }
+  saveState();
+  renderWorkout();
+}
 
-    let historySaved = {};
-    function maybeSaveToHistory(w, count, mins) {
-      const dateKey = new Date().toDateString();
-      const histKey = dateKey + '_' + w.id;
-      if (historySaved[histKey]) return;
-      historySaved[histKey] = true;
-      state.history.unshift({ date: new Date().toISOString(), workout: w.name, exercises: count, duration: mins });
-      if (state.history.length > 50) state.history.pop();
-      updateStreak(dateKey);
-      saveState();
-    }
+function toggleSet(e, exId, setIdx, totalSets) {
+  e.stopPropagation();
+  const key = exId + '_' + setIdx;
+  state.completedSets[key] = !state.completedSets[key];
+  const allDone = Array.from({length: totalSets}, (_, i) => !!state.completedSets[exId + '_' + i]).every(Boolean);
+  state.completedExercises[exId] = allDone;
+  if (state.completedSets[key]) {
+    setTimeout(() => openRestTimer(90), 150);
+  }
+  saveState();
+  renderWorkout();
+}
 
-    function updateStreak(dateKey) {
-      const last = state.lastWorkoutDate;
-      const today = new Date().toDateString();
-      if (last === today) return;
-      const yesterday = new Date(Date.now() - 86400000).toDateString();
-      if (last === yesterday) {
-        state.streak = (state.streak || 0) + 1;
-      } else if (last !== today) {
-        state.streak = 1;
-      }
-      state.lastWorkoutDate = today;
-      document.getElementById('streakBadge').textContent = '🔥 ' + state.streak;
-      saveState();
-    }
+let historySaved = {};
+function maybeSaveToHistory(w, count, mins) {
+  const dateKey = new Date().toDateString();
+  const histKey = dateKey + '_' + w.id;
+  if (historySaved[histKey]) return;
+  historySaved[histKey] = true;
+  state.history.unshift({ date: new Date().toISOString(), workout: w.name, exercises: count, duration: mins });
+  if (state.history.length > 50) state.history.pop();
+  updateStreak(dateKey);
+  saveState();
+}
 
-    // ─── MOBILITY VIEW ───────────────────────────────────────────────────────────
+function updateStreak(dateKey) {
+  const last = state.lastWorkoutDate;
+  const today = new Date().toDateString();
+  if (last === today) return;
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (last === yesterday) {
+    state.streak = (state.streak || 0) + 1;
+  } else if (last !== today) {
+    state.streak = 1;
+  }
+  state.lastWorkoutDate = today;
+  document.getElementById('streakBadge').textContent = '🔥 ' + state.streak;
+  saveState();
+}
 
-    function renderMobility() {
-      const today = new Date().toDateString();
+// ─── MOBILITY VIEW ───────────────────────────────────────────────────────────
 
-      function renderItems(items, containerId) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = '';
-        items.forEach(item => {
-          const key = today + '_' + item.id;
-          const done = !!state.mobilityDone[key];
-          const card = document.createElement('div');
-          card.className = 'mob-card' + (done ? ' done' : '');
-          card.onclick = () => {
-            state.mobilityDone[today + '_' + item.id] = !state.mobilityDone[today + '_' + item.id];
-            saveState();
-            renderMobility();
-          };
-          card.innerHTML = `
+function renderMobility() {
+  const today = new Date().toDateString();
+
+  function renderItems(items, containerId) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+    items.forEach(item => {
+      const key = today + '_' + item.id;
+      const done = !!state.mobilityDone[key];
+      const card = document.createElement('div');
+      card.className = 'mob-card' + (done ? ' done' : '');
+      card.onclick = () => {
+        state.mobilityDone[today + '_' + item.id] = !state.mobilityDone[today + '_' + item.id];
+        saveState();
+        renderMobility();
+      };
+      card.innerHTML = `
         <div class="mob-card-check">
-          <svg style="display:${done ? 'block' : 'none'}" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <svg style="display:${done?'block':'none'}" width="12" height="12" viewBox="0 0 12 12" fill="none">
             <path d="M2 6l3 3 5-5" stroke="#0d0d0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </div>
@@ -1367,26 +802,26 @@
           <div class="mob-card-sets">${item.sets}</div>
         </div>
       `;
-          container.appendChild(card);
-        });
-      }
+      container.appendChild(card);
+    });
+  }
 
-      renderItems(MOBILITY_DAILY, 'mobilityDaily');
-      renderItems(MOBILITY_SHOULDER, 'mobilityShoulder');
-    }
+  renderItems(MOBILITY_DAILY, 'mobilityDaily');
+  renderItems(MOBILITY_SHOULDER, 'mobilityShoulder');
+}
 
-    // ─── SCHEDULE VIEW ───────────────────────────────────────────────────────────
+// ─── SCHEDULE VIEW ───────────────────────────────────────────────────────────
 
-    function renderSchedule() {
-      const grid = document.getElementById('scheduleGrid');
-      grid.innerHTML = '';
-      SCHEDULE.forEach(d => {
-        const el = document.createElement('div');
-        el.className = 'sched-day';
-        const tagClass = d.type === 'train' ? 'tag-train' : d.type === 'climb' ? 'tag-climb' : 'tag-rest';
-        const tagText = d.type === 'train' ? 'Train' : d.type === 'climb' ? 'Climb / Pull' : 'Rest';
-        const btnHtml = d.workout ? `<button style="margin-top:10px;font-family:var(--mono);font-size:11px;padding:6px 14px;border:1px solid var(--border2);border-radius:99px;background:transparent;color:var(--muted);cursor:pointer" onclick="switchToWorkout('${d.workout}')">Load workout →</button>` : '';
-        el.innerHTML = `
+function renderSchedule() {
+  const grid = document.getElementById('scheduleGrid');
+  grid.innerHTML = '';
+  SCHEDULE.forEach(d => {
+    const el = document.createElement('div');
+    el.className = 'sched-day';
+    const tagClass = d.type === 'train' ? 'tag-train' : d.type === 'climb' ? 'tag-climb' : 'tag-rest';
+    const tagText = d.type === 'train' ? 'Train' : d.type === 'climb' ? 'Climb / Pull' : 'Rest';
+    const btnHtml = d.workout ? `<button style="margin-top:10px;font-family:var(--mono);font-size:11px;padding:6px 14px;border:1px solid var(--border2);border-radius:99px;background:transparent;color:var(--muted);cursor:pointer" onclick="switchToWorkout('${d.workout}')">Load workout →</button>` : '';
+    el.innerHTML = `
       <div class="sched-day-header">
         <div class="sched-day-name">${d.day} — ${d.title}</div>
         <span class="sched-tag ${tagClass}">${tagText}</span>
@@ -1394,32 +829,32 @@
       <div class="sched-exercises">${d.exercises}</div>
       ${btnHtml}
     `;
-        grid.appendChild(el);
-      });
-    }
+    grid.appendChild(el);
+  });
+}
 
-    function switchToWorkout(id) {
-      selectWorkout(id);
-      showView('today');
-      document.querySelectorAll('.nav-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
-    }
+function switchToWorkout(id) {
+  selectWorkout(id);
+  showView('today');
+  document.querySelectorAll('.nav-btn').forEach((b,i) => b.classList.toggle('active', i===0));
+}
 
-    // ─── HISTORY VIEW ────────────────────────────────────────────────────────────
+// ─── HISTORY VIEW ────────────────────────────────────────────────────────────
 
-    function renderHistory() {
-      const container = document.getElementById('historyContent');
-      if (!state.history || state.history.length === 0) {
-        container.innerHTML = `<div class="history-empty"><div class="history-empty-icon">📋</div><div class="history-empty-text">No workouts logged yet.<br>Complete a session to see your history.</div></div>`;
-        return;
-      }
-      container.innerHTML = '<div class="history-list" id="historyList"></div>';
-      const list = document.getElementById('historyList');
-      state.history.forEach(h => {
-        const d = new Date(h.date);
-        const dateStr = d.toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric' });
-        const item = document.createElement('div');
-        item.className = 'history-item';
-        item.innerHTML = `
+function renderHistory() {
+  const container = document.getElementById('historyContent');
+  if (!state.history || state.history.length === 0) {
+    container.innerHTML = `<div class="history-empty"><div class="history-empty-icon">📋</div><div class="history-empty-text">No workouts logged yet.<br>Complete a session to see your history.</div></div>`;
+    return;
+  }
+  container.innerHTML = '<div class="history-list" id="historyList"></div>';
+  const list = document.getElementById('historyList');
+  state.history.forEach(h => {
+    const d = new Date(h.date);
+    const dateStr = d.toLocaleDateString('en-CA', { weekday: 'short', month: 'short', day: 'numeric' });
+    const item = document.createElement('div');
+    item.className = 'history-item';
+    item.innerHTML = `
       <div class="history-item-header">
         <div class="history-item-title">${h.workout}</div>
         <div class="history-item-date">${dateStr}</div>
@@ -1429,45 +864,44 @@
         <div class="history-stat"><span>${h.duration}</span> min</div>
       </div>
     `;
-        list.appendChild(item);
-      });
-    }
+    list.appendChild(item);
+  });
+}
 
-    // ─── PHASE MODAL ────────────────────────────────────────────────────────────
+// ─── PHASE MODAL ────────────────────────────────────────────────────────────
 
-    function openPhaseModal() {
-      document.getElementById('phaseModal').classList.add('visible');
-    }
-    function closePhaseModal(e) {
-      if (e.target === document.getElementById('phaseModal')) document.getElementById('phaseModal').classList.remove('visible');
-    }
-    function setPhase(n) {
-      state.phase = n;
-      document.getElementById('phaseBadge').textContent = 'Phase ' + n;
-      [1, 2, 3].forEach(i => document.getElementById('phase-opt-' + i).classList.toggle('selected', i === n));
-      saveState();
-      document.getElementById('phaseModal').classList.remove('visible');
-    }
+function openPhaseModal() {
+  document.getElementById('phaseModal').classList.add('visible');
+}
+function closePhaseModal(e) {
+  if (e.target === document.getElementById('phaseModal')) document.getElementById('phaseModal').classList.remove('visible');
+}
+function setPhase(n) {
+  state.phase = n;
+  document.getElementById('phaseBadge').textContent = 'Phase ' + n;
+  [1,2,3].forEach(i => document.getElementById('phase-opt-' + i).classList.toggle('selected', i === n));
+  saveState();
+  document.getElementById('phaseModal').classList.remove('visible');
+}
 
-    // ─── INIT ────────────────────────────────────────────────────────────────────
+// ─── INIT ────────────────────────────────────────────────────────────────────
 
-    loadState();
-    document.getElementById('phaseBadge').textContent = 'Phase ' + (state.phase || 1);
-    document.getElementById('streakBadge').textContent = '🔥 ' + (state.streak || 0);
-    [1, 2, 3].forEach(i => document.getElementById('phase-opt-' + i).classList.toggle('selected', i === (state.phase || 1)));
-    renderToday();
-    renderMobility();
-    renderSchedule();
-  </script>
-  <script>
-    // iOS PWA: register SW with relative path after DOM is ready
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/calisthenics-pwa/sw.js', { scope: '/calisthenics-pwa/' })
-          .catch(function (err) { console.log('SW registration failed:', err); });
-      });
-    }
-  </script>
+loadState();
+document.getElementById('phaseBadge').textContent = 'Phase ' + (state.phase || 1);
+document.getElementById('streakBadge').textContent = '🔥 ' + (state.streak || 0);
+[1,2,3].forEach(i => document.getElementById('phase-opt-' + i).classList.toggle('selected', i === (state.phase || 1)));
+renderToday();
+renderMobility();
+renderSchedule();
+</script>
+<script>
+  // iOS PWA: register SW with relative path after DOM is ready
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('/calisthenics-pwa/sw.js', { scope: '/calisthenics-pwa/' })
+        .catch(function(err) { console.log('SW registration failed:', err); });
+    });
+  }
+</script>
 </body>
-
 </html>
