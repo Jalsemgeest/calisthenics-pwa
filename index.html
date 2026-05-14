@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -44,16 +45,16 @@
   --radius-sm: 8px;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
 body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
-  overscroll-behavior: none;
-  -webkit-font-smoothing: antialiased;
+font-family: var(–sans);
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+min-height: -webkit-fill-available;
+overscroll-behavior: none;
+-webkit-font-smoothing: antialiased;
 }
 
 /* APP SHELL */
@@ -61,43 +62,43 @@ body {
 
 /* TOP BAR */
 .topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px 20px 12px;
-  border-bottom: 1px solid var(--border);
-  background: var(--bg);
-  flex-shrink: 0;
+display: flex; align-items: center; justify-content: space-between;
+padding: 16px 20px 12px;
+border-bottom: 1px solid var(–border);
+background: var(–bg);
+flex-shrink: 0;
 }
-.logo { font-family: var(--mono); font-size: 18px; font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
-.logo span { color: var(--green); }
+.logo { font-family: var(–mono); font-size: 18px; font-weight: 500; letter-spacing: -0.02em; color: var(–text); }
+.logo span { color: var(–green); }
 .topbar-right { display: flex; align-items: center; gap: 10px; }
 .phase-badge {
-  font-family: var(--mono); font-size: 11px; padding: 4px 10px;
-  background: var(--green-dim); color: var(--green); border: 1px solid var(--green-border);
-  border-radius: 99px; cursor: pointer; transition: all 0.15s;
+font-family: var(–mono); font-size: 11px; padding: 4px 10px;
+background: var(–green-dim); color: var(–green); border: 1px solid var(–green-border);
+border-radius: 99px; cursor: pointer; transition: all 0.15s;
 }
 .phase-badge:active { opacity: 0.7; }
 .streak-badge {
-  font-family: var(--mono); font-size: 11px; padding: 4px 10px;
-  background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,216,122,0.2);
-  border-radius: 99px;
+font-family: var(–mono); font-size: 11px; padding: 4px 10px;
+background: var(–amber-dim); color: var(–amber); border: 1px solid rgba(245,216,122,0.2);
+border-radius: 99px;
 }
 
 /* NAV */
 .nav {
-  display: flex; gap: 2px;
-  padding: 10px 16px;
-  border-bottom: 1px solid var(--border);
-  overflow-x: auto; scrollbar-width: none;
-  flex-shrink: 0;
+display: flex; gap: 2px;
+padding: 10px 16px;
+border-bottom: 1px solid var(–border);
+overflow-x: auto; scrollbar-width: none;
+flex-shrink: 0;
 }
 .nav::-webkit-scrollbar { display: none; }
 .nav-btn {
-  font-family: var(--mono); font-size: 12px; padding: 7px 14px;
-  border: 1px solid transparent; border-radius: var(--radius-sm);
-  color: var(--muted); background: transparent; cursor: pointer;
-  white-space: nowrap; transition: all 0.15s;
+font-family: var(–mono); font-size: 12px; padding: 7px 14px;
+border: 1px solid transparent; border-radius: var(–radius-sm);
+color: var(–muted); background: transparent; cursor: pointer;
+white-space: nowrap; transition: all 0.15s;
 }
-.nav-btn.active { color: var(--text); background: var(--surface2); border-color: var(--border2); }
+.nav-btn.active { color: var(–text); background: var(–surface2); border-color: var(–border2); }
 .nav-btn:active { opacity: 0.7; }
 
 /* CONTENT */
@@ -109,146 +110,147 @@ body {
 
 /* TODAY VIEW */
 .day-header { margin-bottom: 20px; }
-.day-date { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
-.day-title { font-size: 22px; font-weight: 300; color: var(--text); letter-spacing: -0.02em; }
-.day-subtitle { font-size: 13px; color: var(--muted); margin-top: 3px; }
+.day-date { font-family: var(–mono); font-size: 11px; color: var(–muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+.day-title { font-size: 22px; font-weight: 300; color: var(–text); letter-spacing: -0.02em; }
+.day-subtitle { font-size: 13px; color: var(–muted); margin-top: 3px; }
 
 .progress-bar-wrap { margin-bottom: 20px; }
-.progress-label { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; color: var(--muted); margin-bottom: 6px; }
-.progress-track { height: 3px; background: var(--surface2); border-radius: 99px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--green); border-radius: 99px; transition: width 0.4s ease; }
+.progress-label { display: flex; justify-content: space-between; font-family: var(–mono); font-size: 11px; color: var(–muted); margin-bottom: 6px; }
+.progress-track { height: 3px; background: var(–surface2); border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(–green); border-radius: 99px; transition: width 0.4s ease; }
 
 /* EXERCISE BLOCKS */
-.block { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; }
+.block { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); margin-bottom: 10px; overflow: hidden; }
 .block-header { padding: 14px 16px 10px; display: flex; align-items: center; justify-content: space-between; }
-.block-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
-.label-warmup { color: var(--green); }
-.label-main { color: var(--purple); }
-.label-shoulder { color: var(--amber); }
-.label-cooldown { color: var(--muted); }
-.block-time { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.block-label { font-family: var(–mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+.label-warmup { color: var(–green); }
+.label-main { color: var(–purple); }
+.label-skill { color: #67e8f9; }
+.label-shoulder { color: var(–amber); }
+.label-cooldown { color: var(–muted); }
+.block-time { font-family: var(–mono); font-size: 11px; color: var(–muted); }
 
 .exercise {
-  padding: 12px 16px;
-  border-top: 1px solid var(--border);
-  display: flex; align-items: center; gap: 12px;
-  cursor: pointer; transition: background 0.1s;
-  user-select: none;
+padding: 12px 16px;
+border-top: 1px solid var(–border);
+display: flex; align-items: center; gap: 12px;
+cursor: pointer; transition: background 0.1s;
+user-select: none;
 }
-.exercise:active { background: var(--surface2); }
+.exercise:active { background: var(–surface2); }
 .exercise.done { opacity: 0.45; }
 
 .ex-check {
-  width: 22px; height: 22px; border-radius: 50%;
-  border: 1.5px solid var(--border2); flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
+width: 22px; height: 22px; border-radius: 50%;
+border: 1.5px solid var(–border2); flex-shrink: 0;
+display: flex; align-items: center; justify-content: center;
+transition: all 0.2s;
 }
-.exercise.done .ex-check { background: var(--green); border-color: var(--green); }
+.exercise.done .ex-check { background: var(–green); border-color: var(–green); }
 .check-icon { display: none; width: 12px; height: 12px; }
 .exercise.done .check-icon { display: block; }
 
 .ex-info { flex: 1; min-width: 0; }
-.ex-name { font-size: 14px; color: var(--text); line-height: 1.3; }
-.ex-sets { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+.ex-name { font-size: 14px; color: var(–text); line-height: 1.3; }
+.ex-sets { font-family: var(–mono); font-size: 11px; color: var(–muted); margin-top: 2px; }
 
 .ex-sets-tracker { display: flex; gap: 5px; flex-shrink: 0; }
 .set-dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  border: 1.5px solid var(--border2); cursor: pointer;
-  transition: all 0.15s;
+width: 8px; height: 8px; border-radius: 50%;
+border: 1.5px solid var(–border2); cursor: pointer;
+transition: all 0.15s;
 }
-.set-dot.done { background: var(--green); border-color: var(--green); }
+.set-dot.done { background: var(–green); border-color: var(–green); }
 
 /* TIMER */
 .timer-fab {
-  position: fixed; bottom: 24px; right: 20px;
-  width: 56px; height: 56px; border-radius: 50%;
-  background: var(--surface2); border: 1px solid var(--border2);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 100; transition: all 0.2s;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+position: fixed; bottom: 24px; right: 20px;
+width: 56px; height: 56px; border-radius: 50%;
+background: var(–surface2); border: 1px solid var(–border2);
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; z-index: 100; transition: all 0.2s;
+box-shadow: 0 4px 20px rgba(0,0,0,0.4);
 }
 .timer-fab:active { transform: scale(0.94); }
-.timer-fab.running { background: var(--green-dim); border-color: var(--green-border); }
-.timer-display { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--text); }
-.timer-fab.running .timer-display { color: var(--green); }
+.timer-fab.running { background: var(–green-dim); border-color: var(–green-border); }
+.timer-display { font-family: var(–mono); font-size: 13px; font-weight: 500; color: var(–text); }
+.timer-fab.running .timer-display { color: var(–green); }
 
 /* REST TIMER OVERLAY */
 .rest-overlay {
-  position: fixed; inset: 0; background: rgba(13,13,13,0.95);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+position: fixed; inset: 0; background: rgba(13,13,13,0.95);
+display: flex; flex-direction: column; align-items: center; justify-content: center;
+z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s;
 }
 .rest-overlay.visible { opacity: 1; pointer-events: all; }
-.rest-label { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-.rest-time { font-family: var(--mono); font-size: 72px; font-weight: 500; color: var(--text); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
-.rest-time.urgent { color: var(--red); }
-.rest-next { font-size: 13px; color: var(--muted); margin-bottom: 40px; }
-.rest-skip { font-family: var(--mono); font-size: 13px; padding: 12px 28px; border: 1px solid var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--text); cursor: pointer; }
+.rest-label { font-family: var(–mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(–muted); margin-bottom: 16px; }
+.rest-time { font-family: var(–mono); font-size: 72px; font-weight: 500; color: var(–text); letter-spacing: -0.04em; line-height: 1; margin-bottom: 8px; }
+.rest-time.urgent { color: var(–red); }
+.rest-next { font-size: 13px; color: var(–muted); margin-bottom: 40px; }
+.rest-skip { font-family: var(–mono); font-size: 13px; padding: 12px 28px; border: 1px solid var(–border2); border-radius: var(–radius-sm); background: transparent; color: var(–text); cursor: pointer; }
 .rest-skip:active { opacity: 0.7; }
 .rest-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; opacity: 0.15; pointer-events: none; }
 
 /* SCHEDULE VIEW */
 .schedule-grid { display: flex; flex-direction: column; gap: 10px; }
-.sched-day { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.sched-day { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); padding: 14px 16px; }
 .sched-day-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-.sched-day-name { font-size: 15px; font-weight: 500; color: var(--text); }
-.sched-tag { font-family: var(--mono); font-size: 10px; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.05em; text-transform: uppercase; }
-.tag-train { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(196,181,253,0.2); }
-.tag-rest { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
-.tag-climb { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,216,122,0.2); }
-.sched-exercises { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.sched-day-name { font-size: 15px; font-weight: 500; color: var(–text); }
+.sched-tag { font-family: var(–mono); font-size: 10px; padding: 3px 9px; border-radius: 99px; letter-spacing: 0.05em; text-transform: uppercase; }
+.tag-train { background: var(–purple-dim); color: var(–purple); border: 1px solid rgba(196,181,253,0.2); }
+.tag-rest { background: var(–surface2); color: var(–muted); border: 1px solid var(–border); }
+.tag-climb { background: var(–amber-dim); color: var(–amber); border: 1px solid rgba(245,216,122,0.2); }
+.sched-exercises { font-size: 13px; color: var(–muted); line-height: 1.7; }
 
 /* HISTORY VIEW */
 .history-empty { text-align: center; padding: 60px 20px; }
 .history-empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.4; }
-.history-empty-text { font-size: 14px; color: var(--muted); }
+.history-empty-text { font-size: 14px; color: var(–muted); }
 .history-list { display: flex; flex-direction: column; gap: 8px; }
-.history-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+.history-item { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); padding: 14px 16px; }
 .history-item-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-.history-item-title { font-size: 15px; font-weight: 500; color: var(--text); }
-.history-item-date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.history-item-title { font-size: 15px; font-weight: 500; color: var(–text); }
+.history-item-date { font-family: var(–mono); font-size: 11px; color: var(–muted); }
 .history-item-stats { display: flex; gap: 16px; }
-.history-stat { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.history-stat span { color: var(--green); }
+.history-stat { font-family: var(–mono); font-size: 12px; color: var(–muted); }
+.history-stat span { color: var(–green); }
 
 /* MOBILITY VIEW */
-.mob-section-title { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 20px 0 10px; }
+.mob-section-title { font-family: var(–mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(–muted); margin: 20px 0 10px; }
 .mob-section-title:first-child { margin-top: 0; }
-.mob-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background 0.1s; }
-.mob-card:active { background: var(--surface2); }
+.mob-card { background: var(–surface); border: 1px solid var(–border); border-radius: var(–radius); padding: 14px 16px; margin-bottom: 8px; display: flex; align-items: flex-start; gap: 12px; cursor: pointer; transition: background 0.1s; }
+.mob-card:active { background: var(–surface2); }
 .mob-card.done { opacity: 0.45; }
-.mob-card-check { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all 0.2s; }
-.mob-card.done .mob-card-check { background: var(--green); border-color: var(--green); }
+.mob-card-check { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(–border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; transition: all 0.2s; }
+.mob-card.done .mob-card-check { background: var(–green); border-color: var(–green); }
 .mob-card-body { flex: 1; }
-.mob-card-title { font-size: 14px; color: var(--text); font-weight: 500; margin-bottom: 3px; }
-.mob-card-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-.mob-card-sets { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+.mob-card-title { font-size: 14px; color: var(–text); font-weight: 500; margin-bottom: 3px; }
+.mob-card-desc { font-size: 12px; color: var(–muted); line-height: 1.5; }
+.mob-card-sets { font-family: var(–mono); font-size: 11px; color: var(–muted); margin-top: 4px; }
 
 /* PHASE MODAL */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 300; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
 .modal-overlay.visible { opacity: 1; pointer-events: all; }
-.modal { background: var(--surface); border: 1px solid var(--border2); border-radius: var(--radius) var(--radius) 0 0; padding: 24px 20px 40px; width: 100%; transform: translateY(20px); transition: transform 0.2s; }
+.modal { background: var(–surface); border: 1px solid var(–border2); border-radius: var(–radius) var(–radius) 0 0; padding: 24px 20px 40px; width: 100%; transform: translateY(20px); transition: transform 0.2s; }
 .modal-overlay.visible .modal { transform: translateY(0); }
 .modal-title { font-size: 16px; font-weight: 500; margin-bottom: 16px; }
-.phase-option { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.phase-option { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(–border); cursor: pointer; }
 .phase-option:last-child { border-bottom: none; }
-.phase-option-name { font-size: 15px; color: var(--text); }
-.phase-option-weeks { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.phase-option.selected .phase-option-name { color: var(--green); }
+.phase-option-name { font-size: 15px; color: var(–text); }
+.phase-option-weeks { font-family: var(–mono); font-size: 12px; color: var(–muted); }
+.phase-option.selected .phase-option-name { color: var(–green); }
 
 /* COMPLETE BANNER */
-.complete-banner { background: var(--green-dim); border: 1px solid var(--green-border); border-radius: var(--radius); padding: 16px; margin-bottom: 16px; display: none; }
+.complete-banner { background: var(–green-dim); border: 1px solid var(–green-border); border-radius: var(–radius); padding: 16px; margin-bottom: 16px; display: none; }
 .complete-banner.visible { display: block; }
-.complete-banner-title { font-size: 15px; font-weight: 500; color: var(--green); margin-bottom: 4px; }
+.complete-banner-title { font-size: 15px; font-weight: 500; color: var(–green); margin-bottom: 4px; }
 .complete-banner-sub { font-size: 13px; color: rgba(184,245,160,0.6); }
 
 /* WORKOUT SELECTOR */
 .workout-selector { display: flex; gap: 6px; margin-bottom: 16px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
 .workout-selector::-webkit-scrollbar { display: none; }
-.ws-btn { font-family: var(--mono); font-size: 11px; padding: 6px 12px; border: 1px solid var(--border2); border-radius: 99px; background: transparent; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.15s; }
-.ws-btn.active { background: var(--surface2); color: var(--text); border-color: var(--border2); }
+.ws-btn { font-family: var(–mono); font-size: 11px; padding: 6px 12px; border: 1px solid var(–border2); border-radius: 99px; background: transparent; color: var(–muted); cursor: pointer; white-space: nowrap; transition: all 0.15s; }
+.ws-btn.active { background: var(–surface2); color: var(–text); border-color: var(–border2); }
 
 </style>
 </head>
@@ -256,6 +258,7 @@ body {
 <div class="app">
 
   <!-- TOP BAR -->
+
   <div class="topbar">
     <div class="logo">move<span>.</span></div>
     <div class="topbar-right">
@@ -265,6 +268,7 @@ body {
   </div>
 
   <!-- NAV -->
+
   <div class="nav">
     <button class="nav-btn active" onclick="showView('today', this)">Today</button>
     <button class="nav-btn" onclick="showView('mobility', this)">Mobility</button>
@@ -273,63 +277,68 @@ body {
   </div>
 
   <!-- CONTENT -->
+
   <div class="content">
 
-    <!-- TODAY VIEW -->
-    <div id="view-today" class="view active">
-      <div class="day-header">
-        <div class="day-date" id="todayDate"></div>
-        <div class="day-title" id="todayTitle">Select a workout</div>
-        <div class="day-subtitle" id="todaySubtitle"></div>
-      </div>
+```
+<!-- TODAY VIEW -->
+<div id="view-today" class="view active">
+  <div class="day-header">
+    <div class="day-date" id="todayDate"></div>
+    <div class="day-title" id="todayTitle">Select a workout</div>
+    <div class="day-subtitle" id="todaySubtitle"></div>
+  </div>
 
-      <div class="workout-selector" id="workoutSelector"></div>
+  <div class="workout-selector" id="workoutSelector"></div>
 
-      <div class="complete-banner" id="completeBanner">
-        <div class="complete-banner-title">Workout complete 💪</div>
-        <div class="complete-banner-sub" id="completeBannerSub"></div>
-      </div>
+  <div class="complete-banner" id="completeBanner">
+    <div class="complete-banner-title">Workout complete 💪</div>
+    <div class="complete-banner-sub" id="completeBannerSub"></div>
+  </div>
 
-      <div class="progress-bar-wrap" id="progressWrap" style="display:none">
-        <div class="progress-label">
-          <span>Progress</span>
-          <span id="progressText">0 / 0</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progressFill" style="width:0%"></div>
-        </div>
-      </div>
-
-      <div id="workoutContent"></div>
+  <div class="progress-bar-wrap" id="progressWrap" style="display:none">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="progressText">0 / 0</span>
     </div>
-
-    <!-- MOBILITY VIEW -->
-    <div id="view-mobility" class="view">
-      <div class="mob-section-title">Daily — 5 min, any time</div>
-      <div id="mobilityDaily"></div>
-      <div class="mob-section-title">Left shoulder protocol</div>
-      <div id="mobilityShoulder"></div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
     </div>
+  </div>
 
-    <!-- SCHEDULE VIEW -->
-    <div id="view-schedule" class="view">
-      <div class="schedule-grid" id="scheduleGrid"></div>
-    </div>
+  <div id="workoutContent"></div>
+</div>
 
-    <!-- HISTORY VIEW -->
-    <div id="view-history" class="view">
-      <div id="historyContent"></div>
-    </div>
+<!-- MOBILITY VIEW -->
+<div id="view-mobility" class="view">
+  <div class="mob-section-title">Daily — 5 min, any time</div>
+  <div id="mobilityDaily"></div>
+  <div class="mob-section-title">Left shoulder protocol</div>
+  <div id="mobilityShoulder"></div>
+</div>
+
+<!-- SCHEDULE VIEW -->
+<div id="view-schedule" class="view">
+  <div class="schedule-grid" id="scheduleGrid"></div>
+</div>
+
+<!-- HISTORY VIEW -->
+<div id="view-history" class="view">
+  <div id="historyContent"></div>
+</div>
+```
 
   </div>
 </div>
 
 <!-- TIMER FAB -->
+
 <div class="timer-fab" id="timerFab" onclick="toggleTimer()">
   <div class="timer-display" id="timerDisplay">rest</div>
 </div>
 
 <!-- REST TIMER OVERLAY -->
+
 <div class="rest-overlay" id="restOverlay">
   <svg class="rest-ring" viewBox="0 0 200 200">
     <circle cx="100" cy="100" r="90" fill="none" stroke="white" stroke-width="1" stroke-dasharray="565" stroke-dashoffset="0" id="restRingCircle"/>
@@ -341,6 +350,7 @@ body {
 </div>
 
 <!-- PHASE MODAL -->
+
 <div class="modal-overlay" id="phaseModal" onclick="closePhaseModal(event)">
   <div class="modal">
     <div class="modal-title">Training phase</div>
@@ -365,112 +375,159 @@ body {
 const WORKOUTS = {
   push: {
     id: 'push',
-    name: 'Push + Core',
-    subtitle: 'Chest · Shoulders · Triceps · Core',
+    name: 'Push + HS Skill',
+    subtitle: 'Handstand · HSPU · Dips · Planche prep',
     blocks: [
       {
-        label: 'Warm-up', type: 'warmup', time: '5 min',
+        label: 'Warm-up + mobility', type: 'warmup', time: '7 min',
         exercises: [
-          { id: 'e1', name: 'Arm circles (forward + back)', sets: 2, reps: '10/dir', note: '' },
-          { id: 'e2', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Slow, controlled full rotation' },
+          { id: 'e1', name: 'Thoracic extension over foam roll / chair', sets: 2, reps: '10 reps', note: 'Segment by segment — undo the desk hunch before loading' },
+          { id: 'e2', name: 'Wrist circles + wrist prep', sets: 1, reps: '60 s', note: 'Extend, flex, rotate, loaded stretch — non-negotiable for HS work' },
+          { id: 'e3', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Slow full rotation — prime the joint, especially left shoulder' },
+          { id: 'e4', name: 'Band pull-aparts', sets: 2, reps: '15', note: 'Activate rear delts before pushing' },
         ]
       },
       {
-        label: 'Main', type: 'main', time: '20–25 min',
+        label: 'Handstand skill', type: 'skill', time: '10 min',
         exercises: [
-          { id: 'e3', name: 'Incline push-up', sets: 3, reps: '10–12', note: 'P2: flat floor push-up' },
-          { id: 'e4', name: 'Dip bar support hold', sets: 3, reps: '20 s', note: 'Keep shoulders down' },
-          { id: 'e5', name: 'Pike push-up', sets: 2, reps: '8', note: 'Hips high, head through at bottom' },
-          { id: 'e6', name: 'Dead bug', sets: 3, reps: '8/side', note: 'Lower back pressed to floor' },
-          { id: 'e7', name: 'Plank', sets: 3, reps: '20–30 s', note: 'Squeeze glutes + abs' },
+          { id: 'e5', name: 'Wall handstand hold (chest to wall)', sets: 4, reps: '20–30 s', note: 'Stack joints: wrist → elbow → shoulder → hip → ankle. Squeeze everything.' },
+          { id: 'e6', name: 'Kick-up practice (freestanding)', sets: 5, reps: '3 attempts', note: 'Focus on finding balance point, not holding it. Learn to bail safely by pirouetting out.' },
         ]
       },
       {
-        label: 'Shoulder care', type: 'shoulder', time: '8 min',
+        label: 'HSPU progression', type: 'skill', time: '8 min',
         exercises: [
-          { id: 'e8', name: 'Band external rotation', sets: 2, reps: '12–15', note: 'Light band, left arm focus' },
-          { id: 'e9', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'End-of-session, slow circles' },
+          { id: 'e7', name: 'Pike push-up — feet elevated', sets: 4, reps: '5–8', note: 'Hips high, head through at bottom. Progress: raise feet height each week.' },
+          { id: 'e8', name: 'Wall HSPU negative (5 s lower)', sets: 3, reps: '3–5', note: 'Jump to top position, lower as slowly as possible. Builds the eccentric strength needed.' },
         ]
       },
       {
-        label: 'Cool-down', type: 'cooldown', time: '5 min',
+        label: 'Push strength', type: 'main', time: '10 min',
         exercises: [
-          { id: 'e10', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: '' },
-          { id: 'e11', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: '' },
+          { id: 'e9', name: 'Dips', sets: 4, reps: '8–10', note: 'Full ROM. Slight forward lean for chest. Progress: add DB between feet.' },
+          { id: 'e10', name: 'Archer push-up', sets: 3, reps: '5/side', note: 'Planche prep — shift weight laterally, keep opposite arm straight and externally rotated.' },
+          { id: 'e11', name: 'Planche lean (parallettes or floor)', sets: 4, reps: '10–15 s', note: 'Lean forward over wrists, depress scapulae, body rigid. Builds the positional strength.' },
+        ]
+      },
+      {
+        label: 'Shoulder rehab (DB)', type: 'shoulder', time: '8 min',
+        exercises: [
+          { id: 'e12', name: 'DB external rotation — left arm', sets: 3, reps: '12–15', note: 'Light DB (2–5 kg), elbow at side. More precise loading than band. Left arm priority.' },
+          { id: 'e13', name: 'DB lateral raise — slow', sets: 3, reps: '10–12', note: 'Stop at shoulder height. 3 s up, 3 s down. Strengthens supraspinatus.' },
+          { id: 'e14', name: 'Cuban press (DB)', sets: 2, reps: '10', note: 'Upright row → external rotate → press. Full rotator cuff in one movement.' },
+        ]
+      },
+      {
+        label: 'Cool-down + mobility', type: 'cooldown', time: '5 min',
+        exercises: [
+          { id: 'e15', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: 'Elbows at 90°, gently lean into doorway' },
+          { id: 'e16', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: '' },
+          { id: 'e17', name: 'Shoulder CARs', sets: 1, reps: '5/side', note: 'End on full controlled range of motion' },
         ]
       }
     ]
   },
   legs: {
     id: 'legs',
-    name: 'Hinge + Legs',
-    subtitle: 'Glutes · Hamstrings · Quads · Core',
+    name: 'Legs + Front Lever',
+    subtitle: 'Front lever · DB legs · L-sit · Zone 5 finisher',
     blocks: [
       {
-        label: 'Warm-up', type: 'warmup', time: '5 min',
+        label: 'Warm-up + mobility', type: 'warmup', time: '7 min',
         exercises: [
-          { id: 'l1', name: 'Leg swings (forward + lateral)', sets: 2, reps: '10/side', note: '' },
-          { id: 'l2', name: 'Glute bridge', sets: 2, reps: '10', note: 'Activate glutes before loading' },
+          { id: 'l1', name: '90/90 hip stretch', sets: 1, reps: '60 s/side', note: 'Hip flexors shorten with desk work — open them before loading' },
+          { id: 'l2', name: 'Leg swings (forward + lateral)', sets: 2, reps: '10/side', note: '' },
+          { id: 'l3', name: 'Hip circles', sets: 2, reps: '10/dir', note: 'CARs for the hip joint' },
+          { id: 'l4', name: 'Dead hang scapular shrugs', sets: 2, reps: '10', note: 'Warm up lats for front lever work' },
         ]
       },
       {
-        label: 'Main', type: 'main', time: '20–25 min',
+        label: 'Front lever skill', type: 'skill', time: '12 min',
         exercises: [
-          { id: 'l3', name: 'Bodyweight squat', sets: 3, reps: '12', note: 'P2: add pause at bottom' },
-          { id: 'l4', name: 'Hip hinge / RDL', sets: 3, reps: '10', note: 'Hinge at hips, soft knees' },
-          { id: 'l5', name: 'Reverse lunge', sets: 3, reps: '8/side', note: 'P2: add band resistance' },
-          { id: 'l6', name: 'Glute bridge', sets: 3, reps: '12', note: 'P2: single-leg' },
-          { id: 'l7', name: 'Slow calf raise', sets: 2, reps: '15', note: '3 s up, 3 s down' },
-          { id: 'l8', name: 'Copenhagen plank', sets: 2, reps: '15 s/side', note: 'Adductor + core' },
+          { id: 'l5', name: 'Tuck front lever hold', sets: 5, reps: '5–8 s', note: 'Pull bar to hips, body parallel to floor. Tuck knees tight. Progress: advanced tuck → one leg extended → straddle.' },
+          { id: 'l6', name: 'Front lever pull (tuck)', sets: 4, reps: '3–5', note: 'From dead hang, explosively pull into tuck front lever. Builds the pulling strength component.' },
+          { id: 'l7', name: 'Inverted hang', sets: 3, reps: '10 s', note: 'Full inversion on bar or rings. Develops body awareness and shoulder flexibility for the full lever.' },
         ]
       },
       {
-        label: 'Cool-down', type: 'cooldown', time: '5 min',
+        label: 'L-sit + core', type: 'main', time: '8 min',
         exercises: [
-          { id: 'l9', name: '90/90 hip stretch', sets: 1, reps: '60 s/side', note: '' },
-          { id: 'l10', name: 'Standing quad stretch', sets: 1, reps: '45 s/side', note: '' },
-          { id: 'l11', name: 'Hamstring stretch', sets: 1, reps: '45 s/side', note: '' },
+          { id: 'l8', name: 'L-sit hold (parallettes)', sets: 4, reps: 'max hold', note: 'Target 5–10 s per set. Progress: tuck L → one leg extended → full L-sit.' },
+          { id: 'l9', name: 'Hollow body hold', sets: 3, reps: '20–30 s', note: 'Lower back pressed flat, arms overhead. Foundation for front lever and handstand.' },
+          { id: 'l10', name: 'Dragon flag negative', sets: 3, reps: '3–5', note: 'Start at top, lower as slowly as possible. Most effective core compression exercise.' },
+        ]
+      },
+      {
+        label: 'Leg strength (DB)', type: 'main', time: '12 min',
+        exercises: [
+          { id: 'l11', name: 'DB Romanian deadlift', sets: 4, reps: '8–10', note: 'Hinge at hips, soft knees, DBs close to legs. Heaviest movement — go challenging here.' },
+          { id: 'l12', name: 'DB Bulgarian split squat', sets: 3, reps: '8/side', note: 'DB in each hand. Rear foot elevated. Best single-leg builder — will be humbling with weight.' },
+          { id: 'l13', name: 'Goblet squat (DB)', sets: 3, reps: '10', note: 'Hold DB at chest, sit deep. Trains squat pattern with load — bodyweight alone isn\'t enough.' },
+          { id: 'l14', name: 'Copenhagen plank', sets: 2, reps: '20 s/side', note: 'Adductor + core. Neglected but strongly correlated with injury prevention.' },
+          { id: 'l15', name: 'Slow calf raise', sets: 2, reps: '15', note: '3 s up, 3 s down. Tendon health — Achilles loves this.' },
+        ]
+      },
+      {
+        label: 'Zone 5 finisher', type: 'skill', time: '8 min',
+        exercises: [
+          { id: 'l16', name: 'Step-up / jump squat intervals', sets: 4, reps: '20 s on / 2 min off', note: 'All-out effort for 20 s. Research shows this produces VO2 max gains comparable to much longer cardio (Gibala et al.). Hard but short.' },
+        ]
+      },
+      {
+        label: 'Cool-down + mobility', type: 'cooldown', time: '7 min',
+        exercises: [
+          { id: 'l17', name: 'Pigeon pose', sets: 1, reps: '90 s/side', note: 'Hip flexor + external rotator release. Hold longer if tight.' },
+          { id: 'l18', name: 'Hamstring stretch (supine)', sets: 1, reps: '60 s/side', note: 'Lie on back, pull leg toward chest with straight knee.' },
+          { id: 'l19', name: 'Couch stretch', sets: 1, reps: '60 s/side', note: 'Rear foot up the wall, drop hip. Best hip flexor stretch — tight from sitting.' },
+          { id: 'l20', name: 'Thoracic rotation', sets: 1, reps: '10/side', note: 'Side-lying, rotate top shoulder to floor. Decompress the spine.' },
         ]
       }
     ]
   },
   pull: {
     id: 'pull',
-    name: 'Pull Day',
-    subtitle: 'Back · Biceps · Scapula · Shoulder rehab',
+    name: 'Pull + Muscle-up',
+    subtitle: 'Muscle-up · Weighted pull-ups · Rows · Shoulder rehab',
     blocks: [
       {
-        label: 'Warm-up', type: 'warmup', time: '5 min',
+        label: 'Warm-up + mobility', type: 'warmup', time: '7 min',
         exercises: [
-          { id: 'p1', name: 'Arm circles', sets: 2, reps: '10/dir', note: '' },
-          { id: 'p2', name: 'Band pull-aparts', sets: 2, reps: '15', note: 'Light band, scapulae together' },
-          { id: 'p3', name: 'Scapular shrugs (hang or standing)', sets: 2, reps: '10', note: 'Depress + elevate shoulder blades' },
+          { id: 'p1', name: 'Chin tucks', sets: 2, reps: '10–15', note: 'Reset forward head before loading. Do these at your desk too.' },
+          { id: 'p2', name: 'Wall angels', sets: 2, reps: '10 slow', note: 'Back flat to wall. Trains scapular retraction + upward rotation.' },
+          { id: 'p3', name: 'Band pull-aparts', sets: 2, reps: '15', note: 'Activate rear delts and mid trap' },
+          { id: 'p4', name: 'Dead hang', sets: 2, reps: '20 s', note: 'Decompress spine, feel shoulder position, grip warm-up' },
         ]
       },
       {
-        label: 'Main', type: 'main', time: '15–20 min',
+        label: 'Muscle-up skill', type: 'skill', time: '12 min',
         exercises: [
-          { id: 'p4', name: 'Ring / TRX row (~45° angle)', sets: 3, reps: '10–12', note: 'P2: feet elevated on box' },
-          { id: 'p5', name: 'Scapular pull-ups', sets: 3, reps: '8', note: 'P2: add negative pull-ups 3–5 s' },
-          { id: 'p6', name: 'Band lat pulldown', sets: 3, reps: '12', note: 'Anchor band overhead' },
-          { id: 'p7', name: 'Dead hang', sets: 2, reps: '15–20 s', note: 'Skip if shoulder protests' },
+          { id: 'p5', name: 'Explosive pull-up (chest to bar)', sets: 5, reps: '3', note: 'Pull as high and fast as possible. Bar should hit sternum level. This is the key prerequisite — without this the MU won\'t happen.' },
+          { id: 'p6', name: 'Muscle-up transition drill (low rings)', sets: 4, reps: '5', note: 'Set rings at hip height. Jump into false grip, practice the turn-over. Isolates the transition — the hardest part.' },
+          { id: 'p7', name: 'False grip dead hang', sets: 3, reps: '15–20 s', note: 'Wrist draped over the ring, not just fingers. Uncomfortable — build this tolerance deliberately.' },
         ]
       },
       {
-        label: 'Left shoulder', type: 'shoulder', time: '8 min',
+        label: 'Pull strength', type: 'main', time: '12 min',
         exercises: [
-          { id: 'p8', name: 'Band external rotation', sets: 2, reps: '12–15', note: 'Very light — rehab patterning' },
-          { id: 'p9', name: 'Prone Y-T-W', sets: 2, reps: '8 each', note: 'P2: add light plates' },
-          { id: 'p10', name: 'Band face pulls', sets: 2, reps: '15', note: 'Pull to forehead level' },
-          { id: 'p11', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Finish with controlled circles' },
+          { id: 'p8', name: 'Weighted pull-up (DB between feet)', sets: 4, reps: '4–6', note: 'Hold DB between crossed feet. If 5 strict pull-ups is easy, add weight. Directly accelerates MU and OAP.' },
+          { id: 'p9', name: 'Ring row (feet elevated)', sets: 3, reps: '10', note: 'Chest to rings, full scapular retraction at top. Horizontal pull balances vertical pull volume.' },
+          { id: 'p10', name: 'Towel pull-up / archer pull-up', sets: 3, reps: '4/side', note: 'OAP prep. One hand on bar, other grips a hanging towel. Progressively reduce towel assistance.' },
         ]
       },
       {
-        label: 'Cool-down', type: 'cooldown', time: '5 min',
+        label: 'Left shoulder rehab (DB)', type: 'shoulder', time: '8 min',
         exercises: [
-          { id: 'p12', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: '' },
-          { id: 'p13', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: '' },
-          { id: 'p14', name: 'Thoracic rotation', sets: 1, reps: '10/side', note: '' },
+          { id: 'p11', name: 'DB external rotation — left arm', sets: 3, reps: '12–15', note: 'Light DB, elbow at side. Precise loading — more effective than band for measurable progress.' },
+          { id: 'p12', name: 'DB face pull alternative: prone reverse fly', sets: 2, reps: '12', note: 'Lie face down on bench/floor, arms out wide, squeeze mid traps. Replaces cable face pull.' },
+          { id: 'p13', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'End on full controlled range of motion' },
+        ]
+      },
+      {
+        label: 'Cool-down + mobility', type: 'cooldown', time: '5 min',
+        exercises: [
+          { id: 'p14', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: 'Pull one arm across to feel the lat stretch' },
+          { id: 'p15', name: 'Chest-supported thoracic extension', sets: 1, reps: '10 reps', note: 'Lie face down, hands behind head, lift chest. Extends the thoracic spine after pulling.' },
+          { id: 'p16', name: 'Doorway bicep / anterior shoulder stretch', sets: 1, reps: '45 s/side', note: 'Arm straight back at shoulder height, rotate away. Counters the forward pull pattern.' },
         ]
       }
     ]
@@ -481,12 +538,20 @@ const WORKOUTS = {
     subtitle: 'Active pull session — add these after climbing',
     blocks: [
       {
-        label: 'Post-climb add-ons', type: 'main', time: '10 min',
+        label: 'Post-climb skill (low intensity)', type: 'skill', time: '10 min',
         exercises: [
-          { id: 'c1', name: 'Scapular pull-ups', sets: 2, reps: '8', note: 'Cool-down movement' },
-          { id: 'c2', name: 'Band face pulls', sets: 2, reps: '15', note: 'Counteracts forward pull pattern' },
-          { id: 'c3', name: 'Band external rotation — left', sets: 2, reps: '12', note: 'Left shoulder priority' },
-          { id: 'c4', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Final joint care' },
+          { id: 'c1', name: 'Tuck front lever hold', sets: 3, reps: '5 s', note: 'Low intensity — practice, not training. Don\'t grind this after a hard climb.' },
+          { id: 'c2', name: 'False grip dead hang', sets: 3, reps: '10 s', note: 'Build the grip tolerance passively while recovering' },
+        ]
+      },
+      {
+        label: 'Shoulder rehab + mobility', type: 'shoulder', time: '10 min',
+        exercises: [
+          { id: 'c3', name: 'DB external rotation — left arm', sets: 2, reps: '12', note: 'Left shoulder priority post-climb. Light weight.' },
+          { id: 'c4', name: 'Prone Y-T-W', sets: 2, reps: '8 each', note: 'Counteracts the forward pull pattern of climbing' },
+          { id: 'c5', name: 'Shoulder CARs', sets: 2, reps: '5/side', note: 'Final joint care through full range' },
+          { id: 'c6', name: 'Doorway chest stretch', sets: 1, reps: '60 s', note: 'Chest and anterior shoulder — always tight after climbing' },
+          { id: 'c7', name: 'Child\'s pose + lat reach', sets: 1, reps: '60 s/side', note: 'Decompress the lats after heavy pulling' },
         ]
       }
     ]
@@ -494,24 +559,26 @@ const WORKOUTS = {
 };
 
 const SCHEDULE = [
-  { day: 'Day 1', title: 'Push + Core', type: 'train', workout: 'push', exercises: 'Incline push-ups · Pike push-ups · Dead bug · Plank · Shoulder CARs' },
-  { day: 'Day 2', title: 'Active Rest', type: 'rest', workout: null, exercises: 'Dog walk (Zone 2) · Hip flexor stretch · Thoracic rotations · Cat-cow' },
-  { day: 'Day 3', title: 'Hinge + Legs', type: 'train', workout: 'legs', exercises: 'Squat · Hip hinge · Reverse lunge · Glute bridge · Copenhagen plank' },
-  { day: 'Day 4', title: 'Climbing / Pull Day', type: 'climb', workout: 'climb', exercises: 'Rock climbing + shoulder add-ons — or substitute Pull Day if no climbing' },
+  { day: 'Day 1', title: 'Push + Handstand', type: 'train', workout: 'push', exercises: 'Thoracic mobility · HS kick-ups · Wall HS holds · HSPU negatives · Dips · DB shoulder rehab' },
+  { day: 'Day 2', title: 'Active Rest', type: 'rest', workout: null, exercises: 'Dog walk (Zone 2) · 5-min morning mobility · Hip flexor stretch · Thoracic rotations' },
+  { day: 'Day 3', title: 'Legs + Front Lever', type: 'train', workout: 'legs', exercises: 'Hip mobility · Tuck front lever · L-sit · Dragon flag · DB RDL · Bulgarian split squat · Zone 5 finisher' },
+  { day: 'Day 4', title: 'Climbing / Pull + Muscle-up', type: 'climb', workout: 'climb', exercises: 'Rock climbing + shoulder care — or substitute Pull Day with muscle-up drills' },
   { day: 'Day 5–7', title: 'Full Rest', type: 'rest', workout: null, exercises: 'Dog walks daily · Optional 5-min morning mobility · Sleep & recovery' },
 ];
 
 const MOBILITY_DAILY = [
-  { id: 'm1', title: 'Thoracic extension', desc: 'Foam roll or edge of chair, extend over edge. Counteracts forward-flexed desk spine.', sets: '2 × 10 reps' },
-  { id: 'm2', title: '90/90 hip stretch', desc: 'Sit with front and back leg at 90°. Hip flexors shorten with prolonged sitting — this is the antidote.', sets: '60 s / side' },
-  { id: 'm3', title: 'Wall angels', desc: 'Back flat to wall, slide arms overhead. Trains scapular retraction and upward rotation.', sets: '2 × 10 slow reps' },
-  { id: 'm4', title: 'Chin tucks', desc: 'Gently draw chin back, hold 3 s. Resets forward head posture — do at your desk too.', sets: '10–15 reps' },
+  { id: 'm1', title: 'Thoracic extension', desc: 'Foam roll or edge of chair, extend over edge segment by segment. Counteracts forward-flexed desk spine. Do this every morning if you can.', sets: '2 × 10 reps' },
+  { id: 'm2', title: '90/90 hip stretch', desc: 'Sit with front and back leg at 90°. Hip flexors shorten with prolonged sitting — this is the antidote. Hold the uncomfortable side longer.', sets: '60–90 s / side' },
+  { id: 'm3', title: 'Wall angels', desc: 'Back and head flat to wall, slide arms overhead without losing contact. Trains scapular retraction and upward rotation — key for posture and shoulder health.', sets: '2 × 10 slow reps' },
+  { id: 'm4', title: 'Chin tucks', desc: 'Gently draw chin back (not down), hold 3 s. Resets forward head posture. Do these at your desk every hour — set a reminder.', sets: '10–15 reps' },
+  { id: 'm5', title: 'Couch stretch', desc: 'Rear foot up the wall, drop the hip toward the floor. Best hip flexor stretch available. Tight hip flexors are common in desk workers and limit squat depth and running mechanics.', sets: '60 s / side' },
 ];
 
 const MOBILITY_SHOULDER = [
-  { id: 'ms1', title: 'Band external rotation', desc: 'Elbow at side, rotate outward against band. Strengthens infraspinatus/teres minor — most commonly weak rotator cuff muscles.', sets: '2 × 12–15, light band' },
-  { id: 'ms2', title: 'Shoulder CARs', desc: 'Controlled Articular Rotation — 5 slow full circles each direction. Maintains joint health through full range of motion.', sets: '5 circles / direction / side' },
-  { id: 'ms3', title: 'Prone Y-T-W', desc: 'Lie face down, lift arms into Y, T, and W shapes. Activates lower and mid trapezius — counters upper trap dominance from desk work.', sets: '2 × 10 each shape' },
+  { id: 'ms1', title: 'DB external rotation', desc: 'Light DB (2–5 kg), elbow pinned to side, rotate outward. Strengthens infraspinatus and teres minor — the most commonly weak rotator cuff muscles. More measurably progressive than bands.', sets: '3 × 12–15, left arm focus' },
+  { id: 'ms2', title: 'Shoulder CARs', desc: 'Controlled Articular Rotation — 5 slow full circles each direction. Maintains joint health through full active range of motion. This is joint maintenance, not just stretching.', sets: '5 circles / direction / side' },
+  { id: 'ms3', title: 'Cuban press (DB)', desc: 'Upright row → externally rotate → press overhead. Trains the full rotator cuff in one movement. Keep weight light — this is rehab, not a strength exercise.', sets: '2 × 10, light DB' },
+  { id: 'ms4', title: 'Prone Y-T-W', desc: 'Lie face down, lift arms into Y, T, and W shapes. Activates lower and mid trapezius — counters the upper trap dominance that develops from desk work and overhead pressing.', sets: '2 × 10 each shape' },
 ];
 
 // ─── STATE ──────────────────────────────────────────────────────────────────
@@ -894,6 +961,7 @@ renderToday();
 renderMobility();
 renderSchedule();
 </script>
+
 <script>
   // iOS PWA: register SW with relative path after DOM is ready
   if ('serviceWorker' in navigator) {
@@ -903,5 +971,6 @@ renderSchedule();
     });
   }
 </script>
+
 </body>
 </html>
