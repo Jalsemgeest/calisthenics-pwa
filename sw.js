@@ -1,4 +1,4 @@
-const CACHE = ‘move-v6’;
+const CACHE = ‘move-v8’;
 const ASSETS = [
 ‘/calisthenics-pwa/’,
 ‘/calisthenics-pwa/index.html’,
